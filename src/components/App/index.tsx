@@ -3,16 +3,15 @@ import {BrowserRouter as Router, Route} from 'react-router-dom';
 
 import Navigation from "../Navigation";
 
-import * as ROUTES from "../../constants/routes";
-import LandingPage from "../Landing";
+import { MAIN_PAGE } from "constants/routes";
+import MainPage from "components/MainPage";
 
 const App: React.FC = () => {
     return (
         <Router>
             <div>
                 <Navigation/>
-                <hr/>
-                <Route exact path={ROUTES.LANDING} component={LandingPage}/>
+                <Route exact path={MAIN_PAGE.route} component={MainPage}/>
             </div>
         </Router>
     );
