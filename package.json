@@ -6,20 +6,27 @@
     "@types/react": "^16.9.2",
     "@types/react-dom": "^16.9.0",
     "@types/react-router-dom": "^4.3.5",
+    "@types/recompose": "^0.30.7",
     "babel-loader": "8.0.6",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "body-parser": "^1.19.0",
     "css-loader": "^3.2.0",
+    "eslint-config-prettier": "^6.3.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-react-hooks": "^2.1.1",
     "extract-text-webpack-plugin": "^3.0.2",
-    "firebase": "^6.5.0",
+    "firebase": "^7.1.0",
+    "firebase-tools": "^7.4.0",
     "lodash": "^4.17.15",
     "node-sass": "^4.12.0",
+    "prettier": "^1.18.2",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-router": "^5.0.1",
     "react-router-dom": "^5.0.1",
     "react-scripts": "^3.1.1",
+    "recompose": "^0.30.0",
     "sass-loader": "^8.0.0",
     "style-loader": "^1.0.0",
     "typescript": "^3.6.2",
@@ -33,7 +40,11 @@
     "eject": "react-app-env eject"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": "react-app",
+    "env": {
+      "browser": true,
+      "node": true
+    }
   },
   "browserslist": [
     ">0.2%",
@@ -43,6 +54,11 @@
   ],
   "devDependencies": {
     "@types/lodash": "^4.14.138",
+    "@typescript-eslint/eslint-plugin": "^2.3.2",
+    "@typescript-eslint/parser": "^2.3.2",
+    "eslint": "^6.5.1",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-react": "^7.15.1",
     "react-app-env": "^1.2.3"
   }
 }
