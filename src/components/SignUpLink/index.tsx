@@ -7,7 +7,7 @@ const SignUpLink: React.FC<any> = () => {
   return (
     <p>
       {/* eslint-disable-next-line react/no-unescaped-entities */}
-      Don't have an account? <Link to={ROUTES.SIGN_UP.route}>Sign Up</Link>
+      Don't have an account? <Link to={ROUTES.SIGN_UP}>Sign Up</Link>
     </p>
   );
 };

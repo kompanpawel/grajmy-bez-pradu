@@ -16,7 +16,7 @@ const SignUpForm: React.FC<any> = ({ firebase, history }) => {
         setEmail("");
         setPasswordOne("");
         setPasswordTwo("");
-        history.push(ROUTES.MAIN_PAGE.route);
+        history.push(ROUTES.MAIN_PAGE);
       })
       .catch((error: any) => {
         setError(error);

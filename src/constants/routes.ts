@@ -1,21 +1,5 @@
-export const MAIN_PAGE = {
-  route: "/",
-  pageName: "Main Page",
-};
-
-const ACCOUNT = {
-  route: "/account",
-  pageName: "Account",
-};
-
-const SIGN_IN = {
-  route: "/signIn",
-  pageName: "Sign In",
-};
-
-export const SIGN_UP = {
-  route: "/signUp",
-  pageName: "Sign up",
-};
-
-export const routesArray = [MAIN_PAGE, ACCOUNT, SIGN_IN, SIGN_UP];
+export const MAIN_PAGE = "/";
+export const ACCOUNT = "/account";
+export const SIGN_IN = "/signIn";
+export const SIGN_UP = "/signUp";
+export const LOG_OUT = "/logout";
