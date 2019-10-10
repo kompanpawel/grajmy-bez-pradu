@@ -1,10 +1,15 @@
-import React, {useEffect} from "react";
+import React from "react";
+import { withAuthorization } from "components/Session";
 
 const MainPage: React.FC = () => {
-  useEffect(() => {
-
-  })
-  return <div>Hello</div>;
+  return (
+    <div>
+      <h1>Main Page</h1>
+      <p>The main page is accessible by every signed in user</p>
+    </div>
+  );
 };
 
-export default MainPage;
+const condition = (authUser: any) => !!authUser;
+
+export default withAuthorization(condition)(MainPage);

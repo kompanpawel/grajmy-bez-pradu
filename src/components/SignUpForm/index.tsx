@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import * as ROUTES from "constants/routes";
+import { showError } from "utils/errors/error";
 
 const SignUpForm: React.FC<any> = ({ firebase, history }) => {
   const [username, setUsername] = useState("");
@@ -11,6 +12,11 @@ const SignUpForm: React.FC<any> = ({ firebase, history }) => {
   const onSubmit = (event: any) => {
     firebase
       .doCreateUserWithEmailAndPassword(email, passwordOne)
+      .then((authUser: any) => {
+        return firebase
+            .user(authUser.user.uid)
+            .set({ username, email });
+      })
       .then((authUser: any) => {
         setUsername("");
         setEmail("");
@@ -30,10 +36,6 @@ const SignUpForm: React.FC<any> = ({ firebase, history }) => {
 
   const isInvalid = () => {
     return passwordOne !== passwordTwo || passwordOne === "" || email === "" || username === "";
-  };
-
-  const showError = (error: any) => {
-    return error.message;
   };
 
   return (

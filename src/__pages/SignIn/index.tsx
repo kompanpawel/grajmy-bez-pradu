@@ -4,11 +4,12 @@ import { withRouter } from "react-router";
 import { withFirebase } from "components/Firebase";
 import SignUpLink from "components/SignUpLink";
 import SignInForm from "components/SignInForm";
+import PasswordForgetLink from "components/PasswordForgetLink";
 
 const SignInPage = () => (
   <div>
-    <h1>Sign In</h1>
     <WrappedSignInFrom />
+    <PasswordForgetLink />
     <SignUpLink />
   </div>
 );
@@ -19,5 +20,3 @@ const WrappedSignInFrom = compose(
 )(SignInForm);
 
 export default SignInPage;
-
-export { SignInForm };
