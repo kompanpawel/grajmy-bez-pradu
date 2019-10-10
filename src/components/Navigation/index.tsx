@@ -5,10 +5,10 @@ import "./Navigation.scss";
 
 import SignOutButton from "components/SignOutButton";
 import { AuthUserContext } from "components/Session";
-import { AppBar, Button, makeStyles, Toolbar } from "@material-ui/core";
+import {AppBar, Button, CssBaseline, makeStyles, Toolbar, withStyles} from "@material-ui/core";
 
 const useStyles = makeStyles((theme: any) => ({
-  root: {
+  container: {
     flexGrow: 1,
   },
   menuButton: {
@@ -18,6 +18,12 @@ const useStyles = makeStyles((theme: any) => ({
     flexGrow: 1,
   },
 }));
+
+const StyledAppBar = withStyles({
+  root: {
+    backgroundColor: "green",
+  },
+})(AppBar);
 
 const Navigation: React.FC<any> = () => {
   return (
@@ -35,15 +41,16 @@ const NavigationAuth: React.FC<any> = ({ history }) => {
     history.push(route);
   };
   return (
-    <div className={classes.root}>
-      <AppBar position="static">
+    <div className={classes.container}>
+      <CssBaseline />
+      <StyledAppBar position="static">
         <Toolbar>
           <Button onClick={() => clickHandler(ROUTES.MAIN_PAGE)}>Main Page</Button>
           <Button onClick={() => clickHandler(ROUTES.ACCOUNT)}>Account</Button>
           <Button onClick={() => clickHandler(ROUTES.ADMIN)}>Admin</Button>
           <SignOutButton />
         </Toolbar>
-      </AppBar>
+      </StyledAppBar>
     </div>
   );
 };
@@ -55,13 +62,13 @@ const NavigationNonAuth: React.FC<any> = ({ history }) => {
     history.push(route);
   };
   return (
-    <div className={classes.root}>
-      <AppBar position="static">
+    <div className={classes.container}>
+      <StyledAppBar position="static">
         <Toolbar>
           <Button onClick={() => clickHandler(ROUTES.MAIN_PAGE)}>Main Page</Button>
           <Button onClick={() => clickHandler(ROUTES.SIGN_IN)}>Sign In</Button>
         </Toolbar>
-      </AppBar>
+      </StyledAppBar>
     </div>
   );
 };

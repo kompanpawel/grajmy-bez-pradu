@@ -1,24 +1,9 @@
 import React, { useState } from "react";
 import * as ROUTES from "constants/routes";
-import { showError } from "utils/errors/error";
-import {Button, Container, CssBaseline, Grid, Link, makeStyles, TextField, Theme, Typography} from "@material-ui/core";
+import { Button, Container, CssBaseline, Grid, Link, makeStyles, Theme, Typography } from "@material-ui/core";
+import {StyledButton, StyledTextField, useStyles} from "components/SignInForm/styles";
 
-const useStyles = makeStyles((theme: Theme) => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    color: "green"
-  },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-}));
+
 
 const SignInForm: React.FC<any> = ({ firebase, history }) => {
   const [email, setEmail] = useState("");
@@ -39,10 +24,6 @@ const SignInForm: React.FC<any> = ({ firebase, history }) => {
     event.preventDefault();
   };
 
-  const onChange = (setter: any, event: any) => {
-    return setter(event.target.value);
-  };
-
   const isInvalid = password === "" || email === "";
   const classes = useStyles();
   return (
@@ -53,7 +34,7 @@ const SignInForm: React.FC<any> = ({ firebase, history }) => {
           Sign in
         </Typography>
         <form className={classes.form} noValidate onSubmit={onSubmit}>
-          <TextField
+          <StyledTextField
             variant="outlined"
             margin="normal"
             required
@@ -66,7 +47,7 @@ const SignInForm: React.FC<any> = ({ firebase, history }) => {
             autoFocus
             onChange={(e) => setEmail(e.target.value)}
           />
-          <TextField
+          <StyledTextField
             variant="outlined"
             margin="normal"
             required
@@ -78,9 +59,16 @@ const SignInForm: React.FC<any> = ({ firebase, history }) => {
             autoComplete="current-password"
             onChange={(e) => setPassword(e.target.value)}
           />
-          <Button type="submit" fullWidth variant="contained" color="primary" disabled={isInvalid} className={classes.submit}>
+          <StyledButton
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            disabled={isInvalid}
+            className={classes.submit}
+          >
             Sign In
-          </Button>
+          </StyledButton>
           <Grid container>
             <Grid item xs>
               <Link href={ROUTES.PASSWORD_FORGET}>Forget password?</Link>
