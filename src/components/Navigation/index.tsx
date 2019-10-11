@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useCallback} from "react";
 import { Link, withRouter } from "react-router-dom";
 import * as ROUTES from "constants/routes";
 import "./Navigation.scss";
@@ -37,9 +37,9 @@ const Navigation: React.FC<any> = () => {
 
 const NavigationAuth: React.FC<any> = ({ history }) => {
   const classes = useStyles();
-  const clickHandler = (route: string) => {
+  const clickHandler = useCallback((route: string) => {
     history.push(route);
-  };
+  }, [history]);
   return (
     <div className={classes.container}>
       <CssBaseline />
@@ -58,9 +58,9 @@ const NavigationAuth: React.FC<any> = ({ history }) => {
 const NavigationNonAuth: React.FC<any> = ({ history }) => {
   const classes = useStyles();
 
-  const clickHandler = (route: string) => {
-    history.push(route);
-  };
+  const clickHandler = useCallback((route: string) => {
+      history.push(route);
+  }, [history]);
   return (
     <div className={classes.container}>
       <StyledAppBar position="static">

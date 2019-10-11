@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { showError } from "utils/errors/error";
 import { withFirebase } from "components/Firebase";
+import GreenTextField from "components/GreenTextField";
+import SubmitButton from "components/Buttons/SubmitButton";
+import Form from "components/Form/Form";
 
 const PasswordForgetForm: React.FC<any> = ({ firebase }) => {
   const [email, setEmail] = useState("");
@@ -20,19 +23,11 @@ const PasswordForgetForm: React.FC<any> = ({ firebase }) => {
   };
   const isInvalid = email === "";
   return (
-    <form onSubmit={onSubmit}>
-      <input
-        name="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        type="text"
-        placeholder="Email Address"
-      />
-      <button disabled={isInvalid} type="submit">
-        Reset My Password
-      </button>
+    <Form title={"Password Reset"} onSubmit={onSubmit}>
+      <GreenTextField label={"E-mail"} state={email} setter={setEmail} focused={true} />
+      <SubmitButton text={"Reset my password"} isInvalid={isInvalid} />
       {error && <p>{showError(error)}</p>}
-    </form>
+    </Form>
   );
 };
 

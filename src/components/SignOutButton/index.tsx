@@ -2,6 +2,7 @@ import React, { useCallback } from "react";
 import { withFirebase } from "components/Firebase";
 import { withRouter } from "react-router";
 import * as ROUTES from "constants/routes";
+import {Button} from "@material-ui/core";
 
 const SignOutButton: React.FC<any> = ({ firebase, history }) => {
   const logoutHandler = useCallback(() => {
@@ -10,9 +11,9 @@ const SignOutButton: React.FC<any> = ({ firebase, history }) => {
     });
   }, [firebase, history]);
   return (
-    <button type="button" onClick={logoutHandler}>
+    <Button onClick={logoutHandler}>
       Logout
-    </button>
+    </Button>
   );
 };
 

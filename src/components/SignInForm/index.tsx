@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import * as ROUTES from "constants/routes";
-import { Button, Container, CssBaseline, Grid, Link, makeStyles, Theme, Typography } from "@material-ui/core";
-import {StyledButton, StyledTextField, useStyles} from "components/SignInForm/styles";
-
-
+import { Container, CssBaseline, Grid, Link } from "@material-ui/core";
+import GreenTextField from "components/GreenTextField";
+import SubmitButton from "components/Buttons/SubmitButton";
+import Form  from "components/Form/Form";
 
 const SignInForm: React.FC<any> = ({ firebase, history }) => {
   const [email, setEmail] = useState("");
@@ -25,60 +25,22 @@ const SignInForm: React.FC<any> = ({ firebase, history }) => {
   };
 
   const isInvalid = password === "" || email === "";
-  const classes = useStyles();
   return (
     <Container component="main">
       <CssBaseline />
-      <div className={classes.paper}>
-        <Typography component="h1" variant="h5">
-          Sign in
-        </Typography>
-        <form className={classes.form} noValidate onSubmit={onSubmit}>
-          <StyledTextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            value={email}
-            name="email"
-            autoComplete="email"
-            autoFocus
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <StyledTextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <StyledButton
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            disabled={isInvalid}
-            className={classes.submit}
-          >
-            Sign In
-          </StyledButton>
-          <Grid container>
-            <Grid item xs>
-              <Link href={ROUTES.PASSWORD_FORGET}>Forget password?</Link>
-            </Grid>
-            <Grid item>
-              <Link href={ROUTES.SIGN_UP}>{"Don't have an account? Sign up"}</Link>
-            </Grid>
+      <Form title={"Sign in"} onSubmit={onSubmit}>
+        <GreenTextField label={"E-mail Address"} state={email} setter={setEmail} focused={true} />
+        <GreenTextField label={"Password"} state={password} setter={setPassword} isPassword={true} />
+        <SubmitButton text={"Sign in"} isInvalid={isInvalid} />
+        <Grid container>
+          <Grid item xs>
+            <Link href={ROUTES.PASSWORD_FORGET}>Forget password?</Link>
           </Grid>
-        </form>
-      </div>
+          <Grid item>
+            <Link href={ROUTES.SIGN_UP}>{"Don't have an account? Sign up"}</Link>
+          </Grid>
+        </Grid>
+      </Form>
     </Container>
   );
 };
