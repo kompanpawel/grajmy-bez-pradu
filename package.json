@@ -42,7 +42,8 @@
     "start": "react-app-env start",
     "build": "react-app-env build",
     "test": "react-app-env test",
-    "eject": "react-app-env eject"
+    "eject": "react-app-env eject",
+    "convertIcons": "npx @svgr/cli --no-dimensions --template .svgrrc.js --ext tsx -d ./src/components/inlineIcons ./src/assets"
   },
   "eslintConfig": {
     "extends": "react-app",

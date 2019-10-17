@@ -16,7 +16,7 @@ class Firebase {
     app.initializeApp(config);
 
     this.auth = app.auth();
-    this.facebook = app.auth.FacebookAuthProvider();
+    this.facebook = new app.auth.FacebookAuthProvider();
     this.google = new app.auth.GoogleAuthProvider();
     this.db = app.database();
   }

@@ -1,14 +1,34 @@
 import React, { useState } from "react";
 import * as ROUTES from "constants/routes";
-import { Container, CssBaseline, Grid, Link } from "@material-ui/core";
+import {
+  Button,
+  Container,
+  CssBaseline,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  Link,
+  Slide
+} from "@material-ui/core";
 import GreenTextField from "components/GreenTextField";
 import SubmitButton from "components/Buttons/SubmitButton";
 import Form  from "components/Form/Form";
+import {TransitionProps} from "@material-ui/core/transitions";
+import {showError} from "utils/errors/error";
+import FacebookLoginButton from "components/Buttons/FacebookLoginButton";
+import GoogleLoginButton from "components/Buttons/GoogleLoginButton";
+
+const Transition = React.forwardRef<unknown, TransitionProps>(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 const SignInForm: React.FC<any> = ({ firebase, history }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const [openError, setOpenError] = useState(false);
 
   const onSubmit = (event: any) => {
     firebase
@@ -20,27 +40,74 @@ const SignInForm: React.FC<any> = ({ firebase, history }) => {
       })
       .catch((error: any) => {
         setError(error);
+        setOpenError(true);
       });
     event.preventDefault();
   };
+
+  const facebookLogin = () => {
+    firebase
+      .doSignInWithFacebook()
+      .then(() => {
+        history.push(ROUTES.MAIN_PAGE)
+      })
+      .catch((error: any) => {
+        setError(error);
+        setOpenError(true);
+      });
+  }
+
+  const googleLogin = () => {
+    firebase
+      .doSignInWithGoogle()
+      .then(() => {
+        history.push(ROUTES.MAIN_PAGE)
+      })
+      .catch((error: any) => {
+        setError(error);
+        setOpenError(true);
+      });
+  }
+
+  const handleErrorClose = () => {
+    setOpenError(false);
+  }
 
   const isInvalid = password === "" || email === "";
   return (
     <Container component="main">
       <CssBaseline />
       <Form title={"Sign in"} onSubmit={onSubmit}>
-        <GreenTextField label={"E-mail Address"} state={email} setter={setEmail} focused={true} />
-        <GreenTextField label={"Password"} state={password} setter={setPassword} isPassword={true} />
-        <SubmitButton text={"Sign in"} isInvalid={isInvalid} />
+        <GreenTextField label={"Adres e-mail"} state={email} setter={setEmail} focused={true} />
+        <GreenTextField label={"Hasło"} state={password} setter={setPassword} isPassword={true} />
+        <SubmitButton text={"Zaloguj się"} isInvalid={isInvalid} />
         <Grid container>
           <Grid item xs>
-            <Link href={ROUTES.PASSWORD_FORGET}>Forget password?</Link>
+            <Link href={ROUTES.PASSWORD_FORGET} style={{color: "green"}}>Zapomniałeś hasła?</Link>
           </Grid>
           <Grid item>
-            <Link href={ROUTES.SIGN_UP}>{"Don't have an account? Sign up"}</Link>
+            <Link href={ROUTES.SIGN_UP} style={{color: "green"}}>{"Nie masz konta? Załóż konto!"}</Link>
           </Grid>
         </Grid>
       </Form>
+      <FacebookLoginButton onClick={facebookLogin}/>
+      <GoogleLoginButton onClick={googleLogin}/>
+      <Dialog
+        open={openError}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={handleErrorClose}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle>{"Błąd"}</DialogTitle>
+        <DialogContent>{error && showError(error)}</DialogContent>
+        <DialogActions>
+          <Button onClick={handleErrorClose} color="primary">
+            Zamknij
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Container>
   );
 };

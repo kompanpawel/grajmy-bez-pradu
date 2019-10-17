@@ -11,7 +11,7 @@ const StyledGreenButton = withStyles({
   root: {
     backgroundColor: "green",
     "&:hover": {
-      backgroundColor: "green",
+      backgroundColor: "lightgreen",
     },
   },
 })(Button);
