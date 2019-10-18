@@ -130,6 +130,7 @@ const NavigationAuth: React.FC<any> = ({ history }) => {
   const clickHandler = useCallback(
     (route: string) => {
       history.push(route);
+      setOpen(false)
     },
     [history]
   );
@@ -172,11 +173,11 @@ const NavigationAuth: React.FC<any> = ({ history }) => {
           </IconButton>
         </div>
         <Divider />
-        <ListItem button key={"main"} href={ROUTES.MAIN_PAGE}>
+        <ListItem button key={"main"} onClick={() => clickHandler(ROUTES.MAIN_PAGE)}>
           <ListItemIcon><InboxIcon /></ListItemIcon>
           <ListItemText primary={"Strona główna"}/>
         </ListItem>
-        <ListItem button key={"account"} href={ROUTES.ACCOUNT}>
+        <ListItem button key={"account"} onClick={() => clickHandler(ROUTES.ACCOUNT)}>
           <ListItemIcon><InboxIcon /></ListItemIcon>
           <ListItemText primary={"Konto"}/>
         </ListItem>
