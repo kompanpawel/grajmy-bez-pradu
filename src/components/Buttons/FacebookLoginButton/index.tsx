@@ -7,7 +7,10 @@ const StyledFacebookButton = withStyles({
     margin: "10px 0",
     backgroundColor: "#3C5A99",
     color: "white",
-    fontWeight: 700
+    fontWeight: 700,
+    "&:hover": {
+      backgroundColor: "#3C5A99",
+    },
   },
 })(Button)
 

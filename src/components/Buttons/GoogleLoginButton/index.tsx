@@ -7,7 +7,10 @@ const StyledGoogleButton = withStyles({
     margin: "10px 0",
     backgroundColor: "#f4511e",
     color: "white",
-    fontWeight: 700
+    fontWeight: 700,
+    "&:hover": {
+      backgroundColor: "#f4511e",
+    },
   },
 })(Button)
 

@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import * as ROUTES from "constants/routes";
 import { showError } from "utils/errors/error";
+import { Container, CssBaseline } from "@material-ui/core";
+import Form from "components/Form/Form";
+import GreenTextField from "components/GreenTextField";
+import SubmitButton from "components/Buttons/SubmitButton";
 
 const SignUpForm: React.FC<any> = ({ firebase, history }) => {
   const [username, setUsername] = useState("");
@@ -34,45 +38,20 @@ const SignUpForm: React.FC<any> = ({ firebase, history }) => {
     return setter(event.target.value);
   };
 
-  const isInvalid = () => {
-    return passwordOne !== passwordTwo || passwordOne === "" || email === "" || username === "";
-  };
+  const isInvalid = passwordOne !== passwordTwo || passwordOne === "" || email === "" || username === "";
+
 
   return (
-    <form onSubmit={onSubmit}>
-      <input
-        name="username"
-        value={username}
-        onChange={(e) => onChange(setUsername, e)}
-        type="text"
-        placeholder="Full Name"
-      />
-      <input
-        name="email"
-        value={email}
-        onChange={(e) => onChange(setEmail, e)}
-        type="text"
-        placeholder="Email Address"
-      />
-      <input
-        name="passwordOne"
-        value={passwordOne}
-        onChange={(e) => onChange(setPasswordOne, e)}
-        type="text"
-        placeholder="Password"
-      />
-      <input
-        name="passwordTwo"
-        value={passwordTwo}
-        onChange={(e) => onChange(setPasswordTwo, e)}
-        type="text"
-        placeholder="Confirm Password"
-      />
-      <button disabled={isInvalid()} type="submit">
-        Sign Up
-      </button>
-      {error && <p>{showError(error)}</p>}
-    </form>
+    <Container component="main">
+      <CssBaseline />
+      <Form title={"Załóż konto"} onSubmit={onSubmit}>
+        <GreenTextField label={"Nazwa użytkownika"} state={username} setter={setUsername} focused={true}/>
+        <GreenTextField label={"Adres e-mail"} state={email} setter={setEmail} />
+        <GreenTextField label={"Hasło"} state={passwordOne} setter={setPasswordOne} isPassword={true} />
+        <GreenTextField label={"Potwierdź hasło"} state={passwordTwo} setter={setPasswordTwo} isPassword={true} />
+        <SubmitButton text={"Załóż konto"} isInvalid={isInvalid} />
+      </Form>
+    </Container>
   );
 };
 

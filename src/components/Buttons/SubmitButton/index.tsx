@@ -21,7 +21,7 @@ interface ISubmitButtonProps {
   isInvalid: boolean;
 }
 
-const SubmitButton: React.FC<any> = ({ text, isInvalid }) => {
+const SubmitButton: React.FC<ISubmitButtonProps> = ({ text, isInvalid }) => {
   const classes = greenButtonStyle();
   return (
     <StyledGreenButton

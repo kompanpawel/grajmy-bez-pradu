@@ -32,7 +32,7 @@ const GreenTextField: React.FC<IFormProps> = ({ label, state, setter, focused = 
       fullWidth
       label={label}
       value={state}
-      autoComplete={isPassword ? "current-password" : "email"}
+      autoComplete={isPassword ? "current-password" : ""}
       autoFocus={focused}
       type={isPassword ? "password" : "text"}
       onChange={(e) => setter(e.target.value)}

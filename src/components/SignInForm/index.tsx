@@ -10,13 +10,13 @@ import {
   DialogTitle,
   Grid,
   Link,
-  Slide
+  Slide,
 } from "@material-ui/core";
 import GreenTextField from "components/GreenTextField";
 import SubmitButton from "components/Buttons/SubmitButton";
-import Form  from "components/Form/Form";
-import {TransitionProps} from "@material-ui/core/transitions";
-import {showError} from "utils/errors/error";
+import Form from "components/Form/Form";
+import { TransitionProps } from "@material-ui/core/transitions";
+import { showError } from "utils/errors/error";
 import FacebookLoginButton from "components/Buttons/FacebookLoginButton";
 import GoogleLoginButton from "components/Buttons/GoogleLoginButton";
 
@@ -49,49 +49,53 @@ const SignInForm: React.FC<any> = ({ firebase, history }) => {
     firebase
       .doSignInWithFacebook()
       .then(() => {
-        history.push(ROUTES.MAIN_PAGE)
+        history.push(ROUTES.MAIN_PAGE);
       })
       .catch((error: any) => {
         setError(error);
         setOpenError(true);
       });
-  }
+  };
 
   const googleLogin = () => {
     firebase
       .doSignInWithGoogle()
       .then(() => {
-        history.push(ROUTES.MAIN_PAGE)
+        history.push(ROUTES.MAIN_PAGE);
       })
       .catch((error: any) => {
         setError(error);
         setOpenError(true);
       });
-  }
+  };
 
   const handleErrorClose = () => {
     setOpenError(false);
-  }
+  };
 
   const isInvalid = password === "" || email === "";
   return (
     <Container component="main">
       <CssBaseline />
-      <Form title={"Sign in"} onSubmit={onSubmit}>
+      <Form title={"Zaloguj się"} onSubmit={onSubmit}>
         <GreenTextField label={"Adres e-mail"} state={email} setter={setEmail} focused={true} />
         <GreenTextField label={"Hasło"} state={password} setter={setPassword} isPassword={true} />
         <SubmitButton text={"Zaloguj się"} isInvalid={isInvalid} />
-        <Grid container>
-          <Grid item xs>
-            <Link href={ROUTES.PASSWORD_FORGET} style={{color: "green"}}>Zapomniałeś hasła?</Link>
+        <Grid container spacing={2} direction="row">
+          <Grid item>
+            <Link href={ROUTES.PASSWORD_FORGET} style={{ color: "green" }}>
+              Zapomniałeś hasła?
+            </Link>
           </Grid>
           <Grid item>
-            <Link href={ROUTES.SIGN_UP} style={{color: "green"}}>{"Nie masz konta? Załóż konto!"}</Link>
+            <Link href={ROUTES.SIGN_UP} style={{ color: "green" }}>
+              {"Nie masz konta? Załóż konto!"}
+            </Link>
           </Grid>
         </Grid>
       </Form>
-      <FacebookLoginButton onClick={facebookLogin}/>
-      <GoogleLoginButton onClick={googleLogin}/>
+      <FacebookLoginButton onClick={facebookLogin} />
+      <GoogleLoginButton onClick={googleLogin} />
       <Dialog
         open={openError}
         TransitionComponent={Transition}

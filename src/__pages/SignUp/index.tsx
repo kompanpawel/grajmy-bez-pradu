@@ -6,10 +6,7 @@ import { compose } from "recompose";
 
 const SignUpPage: React.FC<any> = () => {
   return (
-    <div>
-      <h1>Sign Up</h1>
-      <WrappedSignUpForm />
-    </div>
+    <WrappedSignUpForm />
   );
 };
 
