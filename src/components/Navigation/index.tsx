@@ -8,19 +8,22 @@ import { AuthUserContext } from "components/Session";
 import {
   AppBar,
   Button,
-  CssBaseline, Divider, Drawer,
+  CssBaseline,
+  Divider,
+  Drawer,
   IconButton,
-  Link, ListItem, ListItemIcon, ListItemText,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
   makeStyles,
   Toolbar,
-  Typography, useTheme,
-  withStyles
+  Typography,
+  useTheme,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import App from "components/App";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import InboxIcon from "@material-ui/icons/MoveToInbox";
 import clsx from "clsx";
 
 const drawerWidth = 240;
@@ -28,6 +31,9 @@ const drawerWidth = 240;
 const useStyles = makeStyles((theme: any) => ({
   root: {
     display: "flex",
+  },
+  wrapper: {
+    marginBottom: "45px",
   },
   appBar: {
     transition: theme.transitions.create(["margin", "width"], {
@@ -80,7 +86,7 @@ const useStyles = makeStyles((theme: any) => ({
     flexGrow: 1,
   },
   menuButton: {
-    margin: theme.spacing(1, 5),
+    margin: theme.spacing(0, 2),
   },
   toolbar: {
     flexWrap: "wrap",
@@ -105,16 +111,15 @@ const useStyles = makeStyles((theme: any) => ({
 }));
 
 const Navigation: React.FC<any> = () => {
+  const classes = useStyles();
   return (
-    <div>
-      <AuthUserContext.Consumer>
-        {(authUser) => (authUser ? <WrappedNavigationAuth /> : <WrappedNavigationNonAuth />)}
-      </AuthUserContext.Consumer>
+    <div className={classes.wrapper}>
+      <AuthUserContext.Consumer>{(authUser) => <WrappedNavigationMenu isAuth={authUser} />}</AuthUserContext.Consumer>
     </div>
   );
 };
 
-const NavigationAuth: React.FC<any> = ({ history }) => {
+const NavigationMenu: React.FC<any> = ({ history, isAuth }) => {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = useState(false);
@@ -130,11 +135,12 @@ const NavigationAuth: React.FC<any> = ({ history }) => {
   const clickHandler = useCallback(
     (route: string) => {
       history.push(route);
-      setOpen(false)
+      setOpen(false);
     },
     [history]
   );
-  return (
+
+  const renderAuth = () => (
     <div className={classes.root}>
       <CssBaseline />
       <AppBar
@@ -164,7 +170,7 @@ const NavigationAuth: React.FC<any> = ({ history }) => {
         anchor="left"
         open={open}
         classes={{
-          paper: classes.drawerPaper
+          paper: classes.drawerPaper,
         }}
       >
         <div className={classes.drawerHeader}>
@@ -174,45 +180,83 @@ const NavigationAuth: React.FC<any> = ({ history }) => {
         </div>
         <Divider />
         <ListItem button key={"main"} onClick={() => clickHandler(ROUTES.MAIN_PAGE)}>
-          <ListItemIcon><InboxIcon /></ListItemIcon>
-          <ListItemText primary={"Strona główna"}/>
+          <ListItemIcon>
+            <InboxIcon />
+          </ListItemIcon>
+          <ListItemText primary={"Strona główna"} />
+        </ListItem>
+        <ListItem button key={"main"} onClick={() => clickHandler(ROUTES.GIVE_FOOD)}>
+          <ListItemIcon>
+            <InboxIcon />
+          </ListItemIcon>
+          <ListItemText primary={"Oddaj jedzonko"} />
         </ListItem>
         <ListItem button key={"account"} onClick={() => clickHandler(ROUTES.ACCOUNT)}>
-          <ListItemIcon><InboxIcon /></ListItemIcon>
-          <ListItemText primary={"Konto"}/>
+          <ListItemIcon>
+            <InboxIcon />
+          </ListItemIcon>
+          <ListItemText primary={"Konto"} />
         </ListItem>
         <SignOutButton className={classes.signInButton} />
       </Drawer>
     </div>
   );
-};
 
-const NavigationNonAuth: React.FC<any> = ({ history, open, setOpen }) => {
-  const classes = useStyles();
-
-  const clickHandler = useCallback(
-    (route: string) => {
-      history.push(route);
-    },
-    [history]
-  );
-  return (
-    <div className={classes.container}>
-      <Toolbar className={classes.toolbar}>
-        <Typography variant="h6" color="inherit" noWrap className={classes.toolbarTitle}>
-          <Link href={ROUTES.MAIN_PAGE} color="inherit" underline="none">
+  const renderNonAuth = () => (
+    <div className={classes.root}>
+      <CssBaseline />
+      <AppBar
+        position="fixed"
+        className={clsx(classes.appBar, {
+          [classes.appBarShift]: open,
+        })}
+      >
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleDrawerOpen}
+            edge="start"
+            className={clsx(classes.menuButton, open && classes.hide)}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" noWrap>
             Ratuj jedzonko
-          </Link>
-        </Typography>
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <Drawer
+        className={classes.drawer}
+        variant="persistent"
+        anchor="left"
+        open={open}
+        classes={{
+          paper: classes.drawerPaper,
+        }}
+      >
+        <div className={classes.drawerHeader}>
+          <IconButton onClick={handleDrawerClose}>
+            {theme.direction === "ltr" ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+          </IconButton>
+        </div>
+        <Divider />
+        <ListItem button key={"main"} onClick={() => clickHandler(ROUTES.MAIN_PAGE)}>
+          <ListItemIcon>
+            <InboxIcon />
+          </ListItemIcon>
+          <ListItemText primary={"Strona główna"} />
+        </ListItem>
         <Button onClick={() => clickHandler(ROUTES.SIGN_IN)} className={classes.signInButton}>
           Zaloguj się
         </Button>
-      </Toolbar>
+      </Drawer>
     </div>
   );
+
+  return isAuth ? renderAuth() : renderNonAuth();
 };
 
-const WrappedNavigationNonAuth = withRouter(NavigationNonAuth);
-const WrappedNavigationAuth = withRouter(NavigationAuth);
+const WrappedNavigationMenu = withRouter(NavigationMenu);
 
 export default Navigation;

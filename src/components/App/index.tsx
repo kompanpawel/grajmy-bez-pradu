@@ -10,6 +10,7 @@ import SignInPage from "__pages/SignIn";
 import withAuthentication from "components/Session/withAuthentication";
 import PasswordForgetPage from "__pages/PasswordForget";
 import AccountPage from "__pages/Account";
+import GiveFoodPage from "__pages/GiveFood";
 
 const App: React.FC<any> = () => {
   return (
@@ -21,6 +22,7 @@ const App: React.FC<any> = () => {
         <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
         <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
         <Route path={ROUTES.ACCOUNT} component={AccountPage} />
+        <Route path={ROUTES.GIVE_FOOD} component={GiveFoodPage} />
       </div>
     </Router>
   );
