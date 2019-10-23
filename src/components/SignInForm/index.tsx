@@ -45,21 +45,15 @@ const SignInForm: React.FC<any> = ({ firebase, history }) => {
     event.preventDefault();
   };
 
-  const facebookLogin = () => {
-    firebase
-      .doSignInWithFacebook()
-      .then(() => {
-        history.push(ROUTES.MAIN_PAGE);
-      })
-      .catch((error: any) => {
-        setError(error);
-        setOpenError(true);
-      });
-  };
-
   const googleLogin = () => {
     firebase
       .doSignInWithGoogle()
+      .then((authUser: any) => {
+        const username = authUser.user.displayName;
+        const email = authUser.user.email;
+        return firebase.user(authUser.user.uid)
+          .set({username, email})
+      })
       .then(() => {
         history.push(ROUTES.MAIN_PAGE);
       })
@@ -94,7 +88,6 @@ const SignInForm: React.FC<any> = ({ firebase, history }) => {
           </Grid>
         </Grid>
       </Form>
-      <FacebookLoginButton onClick={facebookLogin} />
       <GoogleLoginButton onClick={googleLogin} />
       <Dialog
         open={openError}

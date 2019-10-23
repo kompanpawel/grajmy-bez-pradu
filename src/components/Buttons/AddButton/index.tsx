@@ -1,6 +1,6 @@
 import React from "react";
 import { ButtonBase, createStyles, makeStyles, Theme, Typography } from "@material-ui/core";
-import FoodImage from "assets/food.jpg"
+import FoodImage from "assets/food.jpg";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -16,8 +16,7 @@ const useStyles = makeStyles((theme: Theme) =>
       position: "relative",
       height: 100,
       width: "90%",
-      [theme.breakpoints.down("xs")]: {
-      },
+      [theme.breakpoints.down("xs")]: {},
       "&:hover, &$focusVisible": {
         zIndex: 1,
         "& $imageBackdrop": {
@@ -78,21 +77,20 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const AddButton: React.FC<any> = () => {
+interface IAddButtonProps {
+  onClick: () => void;
+}
+
+const AddButton: React.FC<IAddButtonProps> = ({ onClick }) => {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
-      <ButtonBase focusRipple className={classes.image} focusVisibleClassName={classes.focusVisible}>
+      <ButtonBase focusRipple className={classes.image} focusVisibleClassName={classes.focusVisible} onClick={onClick}>
         <span className={classes.imageSrc} style={{ backgroundImage: `url(${FoodImage})` }} />
         <span className={classes.imageBackdrop} />
-        <span className={classes.imageButton} >
-          <Typography
-            component="span"
-            variant="subtitle1"
-            color="inherit"
-            className={classes.imageTitle}
-          >
+        <span className={classes.imageButton}>
+          <Typography component="span" variant="subtitle1" color="inherit" className={classes.imageTitle}>
             Dodaj ofertę
             <span className={classes.imageMarked} />
           </Typography>

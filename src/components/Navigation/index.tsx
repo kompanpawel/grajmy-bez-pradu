@@ -110,32 +110,31 @@ const useStyles = makeStyles((theme: any) => ({
   },
 }));
 
-const Navigation: React.FC<any> = () => {
+const Navigation: React.FC<any> = ({open, setOpen}) => {
   const classes = useStyles();
   return (
     <div className={classes.wrapper}>
-      <AuthUserContext.Consumer>{(authUser) => <WrappedNavigationMenu isAuth={authUser} />}</AuthUserContext.Consumer>
+      <AuthUserContext.Consumer>{(authUser) => <WrappedNavigationMenu isAuth={authUser} state={open} setter={setOpen}/>}</AuthUserContext.Consumer>
     </div>
   );
 };
 
-const NavigationMenu: React.FC<any> = ({ history, isAuth }) => {
+const NavigationMenu: React.FC<any> = ({ history, isAuth, state, setter }) => {
   const classes = useStyles();
   const theme = useTheme();
-  const [open, setOpen] = useState(false);
 
   const handleDrawerOpen = useCallback(() => {
-    setOpen(true);
+    setter(true);
   }, []);
 
   const handleDrawerClose = useCallback(() => {
-    setOpen(false);
+    setter(false);
   }, []);
 
   const clickHandler = useCallback(
     (route: string) => {
       history.push(route);
-      setOpen(false);
+      setter(false);
     },
     [history]
   );
@@ -146,7 +145,7 @@ const NavigationMenu: React.FC<any> = ({ history, isAuth }) => {
       <AppBar
         position="fixed"
         className={clsx(classes.appBar, {
-          [classes.appBarShift]: open,
+          [classes.appBarShift]: state,
         })}
       >
         <Toolbar>
@@ -155,7 +154,7 @@ const NavigationMenu: React.FC<any> = ({ history, isAuth }) => {
             aria-label="open drawer"
             onClick={handleDrawerOpen}
             edge="start"
-            className={clsx(classes.menuButton, open && classes.hide)}
+            className={clsx(classes.menuButton, state && classes.hide)}
           >
             <MenuIcon />
           </IconButton>
@@ -168,7 +167,7 @@ const NavigationMenu: React.FC<any> = ({ history, isAuth }) => {
         className={classes.drawer}
         variant="persistent"
         anchor="left"
-        open={open}
+        open={state}
         classes={{
           paper: classes.drawerPaper,
         }}
@@ -208,7 +207,7 @@ const NavigationMenu: React.FC<any> = ({ history, isAuth }) => {
       <AppBar
         position="fixed"
         className={clsx(classes.appBar, {
-          [classes.appBarShift]: open,
+          [classes.appBarShift]: state,
         })}
       >
         <Toolbar>
@@ -217,7 +216,7 @@ const NavigationMenu: React.FC<any> = ({ history, isAuth }) => {
             aria-label="open drawer"
             onClick={handleDrawerOpen}
             edge="start"
-            className={clsx(classes.menuButton, open && classes.hide)}
+            className={clsx(classes.menuButton, state && classes.hide)}
           >
             <MenuIcon />
           </IconButton>
@@ -230,7 +229,7 @@ const NavigationMenu: React.FC<any> = ({ history, isAuth }) => {
         className={classes.drawer}
         variant="persistent"
         anchor="left"
-        open={open}
+        open={state}
         classes={{
           paper: classes.drawerPaper,
         }}

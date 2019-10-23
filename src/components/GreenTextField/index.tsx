@@ -7,6 +7,7 @@ interface IFormProps {
   setter: any;
   focused?: boolean;
   isPassword?: true;
+  required?: false;
 }
 
 const StyledGreenTextField = withStyles({
@@ -23,12 +24,12 @@ const StyledGreenTextField = withStyles({
 })(TextField);
 
 
-const GreenTextField: React.FC<IFormProps> = ({ label, state, setter, focused = false, isPassword }) => {
+const GreenTextField: React.FC<IFormProps> = ({ label, state, setter, focused = false, isPassword, required = true }) => {
   return (
     <StyledGreenTextField
       variant="outlined"
       margin="normal"
-      required
+      required={required}
       fullWidth
       label={label}
       value={state}

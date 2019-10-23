@@ -1,4 +1,4 @@
-import React  from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import Navigation from "../Navigation";
@@ -13,10 +13,12 @@ import AccountPage from "__pages/Account";
 import GiveFoodPage from "__pages/GiveFood";
 
 const App: React.FC<any> = () => {
+  const [open, setOpen] = useState(false);
+
   return (
     <Router>
-      <div>
-        <Navigation />
+      <Navigation open={open} setOpen={setOpen} />
+      <div onClick={() => setOpen(false)}>
         <Route exact path={ROUTES.MAIN_PAGE} component={MainPage} />
         <Route path={ROUTES.SIGN_IN} component={SignInPage} />
         <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
