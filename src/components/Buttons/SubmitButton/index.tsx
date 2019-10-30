@@ -18,7 +18,7 @@ const StyledGreenButton = withStyles({
 
 interface ISubmitButtonProps {
   text: string;
-  isInvalid: boolean;
+  isInvalid?: boolean;
 }
 
 const SubmitButton: React.FC<ISubmitButtonProps> = ({ text, isInvalid }) => {
