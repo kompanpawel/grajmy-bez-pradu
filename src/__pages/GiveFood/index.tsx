@@ -3,6 +3,7 @@ import AddButton from "components/Buttons/AddButton";
 import { Dialog } from "@material-ui/core";
 import { withFirebase } from "components/Firebase";
 import NewOfferDialog from "__dialogs/NewOfferDialog";
+import YourOffers from "components/YourOffers";
 
 const GiveFoodPage: React.FC<any> = () => {
   const [open, setOpen] = useState(false);
@@ -18,7 +19,7 @@ const GiveFoodPage: React.FC<any> = () => {
   return (
     <div>
       <AddButton onClick={handleDialogOpen} />
-
+      <WrappedYourOffers />
       <Dialog
         open={open}
         keepMounted
@@ -34,5 +35,6 @@ const GiveFoodPage: React.FC<any> = () => {
 };
 
 const WrappedNewOfferDialog = withFirebase(NewOfferDialog);
+const WrappedYourOffers = withFirebase(YourOffers);
 
 export default GiveFoodPage;
