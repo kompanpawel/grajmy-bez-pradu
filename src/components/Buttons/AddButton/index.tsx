@@ -91,7 +91,7 @@ const AddButton: React.FC<IAddButtonProps> = ({ onClick }) => {
         <span className={classes.imageBackdrop} />
         <span className={classes.imageButton}>
           <Typography component="span" variant="subtitle1" color="inherit" className={classes.imageTitle}>
-            Dodaj ofertę
+            Dodaj sesję
             <span className={classes.imageMarked} />
           </Typography>
         </span>
@@ -100,4 +100,4 @@ const AddButton: React.FC<IAddButtonProps> = ({ onClick }) => {
   );
 };
 
-export default AddButton;
+export default React.memo(AddButton);

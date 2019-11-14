@@ -5,7 +5,7 @@ import { withFirebase } from "components/Firebase";
 import NewOfferDialog from "__dialogs/NewOfferDialog";
 import YourOffers from "components/YourOffers";
 
-const GiveFoodPage: React.FC<any> = () => {
+const MakeSessionPage: React.FC<any> = () => {
   const [open, setOpen] = useState(false);
 
   const handleDialogOpen = () => {
@@ -37,4 +37,4 @@ const GiveFoodPage: React.FC<any> = () => {
 const WrappedNewOfferDialog = withFirebase(NewOfferDialog);
 const WrappedYourOffers = withFirebase(YourOffers);
 
-export default GiveFoodPage;
+export default MakeSessionPage;

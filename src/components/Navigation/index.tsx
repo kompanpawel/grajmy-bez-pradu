@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback } from "react";
 import { withRouter } from "react-router-dom";
 import * as ROUTES from "constants/routes";
 import "./Navigation.scss";
@@ -15,7 +15,6 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  makeStyles,
   Toolbar,
   Typography,
   useTheme,
@@ -26,126 +25,42 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import clsx from "clsx";
 
-const drawerWidth = 240;
-
-const useStyles = makeStyles((theme: any) => ({
-  root: {
-    display: "flex",
-  },
-  wrapper: {
-    marginBottom: "45px",
-  },
-  appBar: {
-    transition: theme.transitions.create(["margin", "width"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: drawerWidth,
-    transition: theme.transitions.create(["margin", "width"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  hide: {
-    display: "none",
-  },
-  drawer: {
-    width: drawerWidth,
-    flexShrink: 0,
-  },
-  drawerPaper: {
-    width: drawerWidth,
-  },
-  drawerHeader: {
-    display: "flex",
-    alignItems: "center",
-    padding: theme.spacing(0, 1),
-    ...theme.mixins.toolbar,
-    justifyContent: "flex-end",
-  },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
-    transition: theme.transitions.create("margin", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    marginLeft: -drawerWidth,
-  },
-  contentShift: {
-    transition: theme.transitions.create("margin", {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    marginLeft: 0,
-  },
-  container: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    margin: theme.spacing(0, 2),
-  },
-  toolbar: {
-    flexWrap: "wrap",
-  },
-  toolbarTitle: {
-    flexGrow: 1,
-    color: "green",
-    fontSize: "20px",
-    fontWeight: 700,
-  },
-  signInButton: {
-    margin: theme.spacing(1, 5),
-    backgroundColor: "green",
-    color: "white",
-    "&:hover": {
-      backgroundColor: "lightgreen",
-    },
-  },
-  title: {
-    flexGrow: 1,
-  },
-}));
-
-const Navigation: React.FC<any> = ({open, setOpen}) => {
-  const classes = useStyles();
+const Navigation: React.FC<any> = ({ open, setOpen }) => {
   return (
-    <div className={classes.wrapper}>
-      <AuthUserContext.Consumer>{(authUser) => <WrappedNavigationMenu isAuth={authUser} state={open} setter={setOpen}/>}</AuthUserContext.Consumer>
+    <div className="navigation__wrapper">
+      <AuthUserContext.Consumer>
+        {(authUser) => <WrappedNavigationMenu isAuth={authUser} state={open} setter={setOpen} />}
+      </AuthUserContext.Consumer>
     </div>
   );
 };
 
 const NavigationMenu: React.FC<any> = ({ history, isAuth, state, setter }) => {
-  const classes = useStyles();
   const theme = useTheme();
 
   const handleDrawerOpen = useCallback(() => {
     setter(true);
-  }, []);
+  }, [setter]);
 
   const handleDrawerClose = useCallback(() => {
     setter(false);
-  }, []);
+  }, [setter]);
 
   const clickHandler = useCallback(
     (route: string) => {
       history.push(route);
       setter(false);
     },
-    [history]
+    [history, setter]
   );
 
   const renderAuth = () => (
-    <div className={classes.root}>
+    <div className="navigation">
       <CssBaseline />
       <AppBar
         position="fixed"
-        className={clsx(classes.appBar, {
-          [classes.appBarShift]: state,
+        className={clsx("navigation__app-bar", {
+          ["navigation__app-bar--shift"]: state,
         })}
       >
         <Toolbar>
@@ -154,25 +69,17 @@ const NavigationMenu: React.FC<any> = ({ history, isAuth, state, setter }) => {
             aria-label="open drawer"
             onClick={handleDrawerOpen}
             edge="start"
-            className={clsx(classes.menuButton, state && classes.hide)}
+            className="navigation__menu-button"
           >
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            Ratuj jedzonko
+            Grajmy bez prądu
           </Typography>
         </Toolbar>
       </AppBar>
-      <Drawer
-        className={classes.drawer}
-        variant="persistent"
-        anchor="left"
-        open={state}
-        classes={{
-          paper: classes.drawerPaper,
-        }}
-      >
-        <div className={classes.drawerHeader}>
+      <Drawer className="navigation-drawer" variant="persistent" anchor="left" open={state}>
+        <div className="navigation-drawer__header">
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === "ltr" ? <ChevronLeftIcon /> : <ChevronRightIcon />}
           </IconButton>
@@ -184,11 +91,11 @@ const NavigationMenu: React.FC<any> = ({ history, isAuth, state, setter }) => {
           </ListItemIcon>
           <ListItemText primary={"Strona główna"} />
         </ListItem>
-        <ListItem button key={"main"} onClick={() => clickHandler(ROUTES.GIVE_FOOD)}>
+        <ListItem button key={"main"} onClick={() => clickHandler(ROUTES.MAKE_SESSION)}>
           <ListItemIcon>
             <InboxIcon />
           </ListItemIcon>
-          <ListItemText primary={"Oddaj jedzonko"} />
+          <ListItemText primary={"Utwórz sesję"} />
         </ListItem>
         <ListItem button key={"account"} onClick={() => clickHandler(ROUTES.ACCOUNT)}>
           <ListItemIcon>
@@ -196,18 +103,18 @@ const NavigationMenu: React.FC<any> = ({ history, isAuth, state, setter }) => {
           </ListItemIcon>
           <ListItemText primary={"Konto"} />
         </ListItem>
-        <SignOutButton className={classes.signInButton} />
+        <SignOutButton className="navigation__sign-in-button" />
       </Drawer>
     </div>
   );
 
   const renderNonAuth = () => (
-    <div className={classes.root}>
+    <div className="navigation">
       <CssBaseline />
       <AppBar
         position="fixed"
-        className={clsx(classes.appBar, {
-          [classes.appBarShift]: state,
+        className={clsx("navigation-app-bar", {
+          ["navigation__app-bar--shift"]: state,
         })}
       >
         <Toolbar>
@@ -216,25 +123,17 @@ const NavigationMenu: React.FC<any> = ({ history, isAuth, state, setter }) => {
             aria-label="open drawer"
             onClick={handleDrawerOpen}
             edge="start"
-            className={clsx(classes.menuButton, state && classes.hide)}
+            className="navigation__menu-button"
           >
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            Ratuj jedzonko
+            Grajmy bez prądu
           </Typography>
         </Toolbar>
       </AppBar>
-      <Drawer
-        className={classes.drawer}
-        variant="persistent"
-        anchor="left"
-        open={state}
-        classes={{
-          paper: classes.drawerPaper,
-        }}
-      >
-        <div className={classes.drawerHeader}>
+      <Drawer className="navigation-drawer" variant="persistent" anchor="left" open={state}>
+        <div className="navigation-drawer__header">
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === "ltr" ? <ChevronLeftIcon /> : <ChevronRightIcon />}
           </IconButton>
@@ -246,7 +145,7 @@ const NavigationMenu: React.FC<any> = ({ history, isAuth, state, setter }) => {
           </ListItemIcon>
           <ListItemText primary={"Strona główna"} />
         </ListItem>
-        <Button onClick={() => clickHandler(ROUTES.SIGN_IN)} className={classes.signInButton}>
+        <Button onClick={() => clickHandler(ROUTES.SIGN_IN)} className="navigation__sign-in-button">
           Zaloguj się
         </Button>
       </Drawer>

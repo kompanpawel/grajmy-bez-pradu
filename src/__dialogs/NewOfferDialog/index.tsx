@@ -5,14 +5,15 @@ import { MenuItem, Select, FormControl, InputLabel, FormHelperText } from "@mate
 import _ from "lodash";
 import SubmitButton from "components/Buttons/SubmitButton";
 import { v1 } from "uuid";
+import moment from "moment";
 
-enum ORDER_STATUS {
+export enum ORDER_STATUS {
   READY = "Do wzięcia",
   RESERVED = "Zarezerwowane",
   COMPLETED = "Oddane/Zakończone",
 }
 
-const ORDERS_TABLE = [ORDER_STATUS.READY, ORDER_STATUS.RESERVED, ORDER_STATUS.COMPLETED];
+export const ORDERS_TABLE = [ORDER_STATUS.READY, ORDER_STATUS.RESERVED, ORDER_STATUS.COMPLETED];
 
 const NewOfferDialog: React.FC<any> = ({ firebase, closeDialog }) => {
   const [name, setName] = useState("");
@@ -27,6 +28,7 @@ const NewOfferDialog: React.FC<any> = ({ firebase, closeDialog }) => {
   const onSubmit = (event: any) => {
     const uuid = v1();
     const user = firebase.auth.currentUser.uid;
+    const created = moment().format("D/MM/YYYY H:mm");
     firebase
       .offer(uuid)
       .set({
@@ -39,6 +41,8 @@ const NewOfferDialog: React.FC<any> = ({ firebase, closeDialog }) => {
         localization,
         info,
         status,
+        uuid,
+        created
       })
       .then(() => {
         closeDialog();

@@ -41,9 +41,9 @@ class Firebase {
 
   foodCategories = () => this.db.ref("food_categories");
 
-  offer = (uid) => this.db.ref(`offers/${uid}`);
+  session = (uid) => this.db.ref(`sessions/${uid}`);
 
-  offers = () => this.db.ref("offers");
+  sessions = () => this.db.ref("sessions");
 }
 
 export default Firebase;

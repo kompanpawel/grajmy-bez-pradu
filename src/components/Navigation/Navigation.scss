@@ -1,26 +1,54 @@
-.header {
+.navigation {
+  display: flex;
 
-  &__navigation {
-    height: 100%;
-    background-color: greenyellow;
-    padding: 0 20px;
-    display: flex;
-    flex-direction: row;
-    flex-grow: 1;
+  &__wrapper {
+    margin-bottom: 60px;
+    @media screen and (min-width: 600px) {
+      margin-bottom: 80px;
+    }
   }
 
-  &__item {
-    font-size: 2rem;
-    font-weight: 700;
-    margin: 0 5px;
-    padding: 10px 15px;
-    text-decoration: none;
-    &:hover {
-      background-color: white;
+  &__app-bar {
+    transition: width;
+    transition-duration: 0.5s;
+    &--shift {
+      width: calc(100% - 240px);
+      margin-left: 240px;
+      transition: width;
     }
-    &:last-child {
-      position: relative;
-      right: 0;
+  }
+
+  &__menu-button {
+    &.MuiIconButton-root {
+      margin-right: 20px;
+    }
+  }
+
+  &__sign-in-button {
+    &.MuiButton-root {
+      background-color: green;
+      color: white;
+      margin: 10px 20px;
+      &:hover {
+        background-color: lightgreen;
+      }
+    }
+  }
+
+  .navigation-drawer {
+    width: 240px;
+    & .MuiPaper-root {
+      width: 240px;
+    }
+
+    &__header {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      height: 55px;
+      @media screen and (min-width: 600px) {
+        height: 64px;
+      }
     }
   }
 

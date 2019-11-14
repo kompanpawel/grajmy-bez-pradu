@@ -1,20 +1,6 @@
 import React from "react";
-import { Button, makeStyles, Theme, withStyles } from "@material-ui/core";
-
-const greenButtonStyle = makeStyles((theme: Theme) => ({
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-}));
-
-const StyledGreenButton = withStyles({
-  root: {
-    backgroundColor: "green",
-    "&:hover": {
-      backgroundColor: "lightgreen",
-    },
-  },
-})(Button);
+import { Button } from "@material-ui/core";
+import "./SubmitButton.scss";
 
 interface ISubmitButtonProps {
   text: string;
@@ -22,18 +8,17 @@ interface ISubmitButtonProps {
 }
 
 const SubmitButton: React.FC<ISubmitButtonProps> = ({ text, isInvalid }) => {
-  const classes = greenButtonStyle();
   return (
-    <StyledGreenButton
+    <Button
       type="submit"
       fullWidth
       variant="contained"
       color="primary"
       disabled={isInvalid}
-      className={classes.submit}
+      className="submit-button"
     >
       {text}
-    </StyledGreenButton>
+    </Button>
   );
 };
 

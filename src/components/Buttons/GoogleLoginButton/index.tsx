@@ -8,6 +8,7 @@ const StyledGoogleButton = withStyles({
     backgroundColor: "#f4511e",
     color: "white",
     fontWeight: 700,
+    maxWidth: 573,
     "&:hover": {
       backgroundColor: "#f4511e",
     },

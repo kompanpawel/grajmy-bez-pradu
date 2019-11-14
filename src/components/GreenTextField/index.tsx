@@ -1,5 +1,6 @@
 import React from "react";
-import {TextField, withStyles} from "@material-ui/core";
+import { TextField } from "@material-ui/core";
+import "./GreenTextField.scss";
 
 interface IFormProps {
   label: string;
@@ -10,23 +11,17 @@ interface IFormProps {
   required?: false;
 }
 
-const StyledGreenTextField = withStyles({
-  root: {
-    "& label.Mui-focused": {
-      color: "green",
-    },
-    "& .MuiOutlinedInput-root": {
-      "&.Mui-focused fieldset": {
-        borderColor: "green",
-      },
-    },
-  },
-})(TextField);
-
-
-const GreenTextField: React.FC<IFormProps> = ({ label, state, setter, focused = false, isPassword, required = true }) => {
+const GreenTextField: React.FC<IFormProps> = ({
+  label,
+  state,
+  setter,
+  focused = false,
+  isPassword,
+  required = true,
+}) => {
   return (
-    <StyledGreenTextField
+    <TextField
+      className="text-field"
       variant="outlined"
       margin="normal"
       required={required}
