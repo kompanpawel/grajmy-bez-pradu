@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import _ from "lodash";
-import OfferCard from "components/OfferCard";
-import { withFirebase } from "components/Firebase";
 
-const YourOffers: React.FC<any> = ({ firebase }) => {
+import { withFirebase } from "components/Firebase";
+import { CircularProgress } from "@material-ui/core";
+import "./YourSessions.scss";
+import SessionCard from "components/SessionCard";
+
+const YourSessions: React.FC<any> = ({ firebase }) => {
   const [userID, setUserID] = useState("");
-  const [offersList, setOffersList] = useState([]);
+  const [sessionsList, setSessionsList] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -21,7 +24,7 @@ const YourOffers: React.FC<any> = ({ firebase }) => {
             snapshot.forEach((item: any) => {
               array.push(item.val());
             });
-            setOffersList(array);
+            setSessionsList(array);
             setLoading(false);
           });
       } else {
@@ -31,14 +34,22 @@ const YourOffers: React.FC<any> = ({ firebase }) => {
   }, [firebase, userID]);
 
   return (
-    <div>
-      {_.map(offersList, (offer: any) => (
-        <WrappedOfferCard data={offer} />
-      ))}
-    </div>
+    <>
+      <div className="your-sessions__title">Twoje sesje</div>
+      {loading && (
+        <div className="your-sessions__loader">
+          <CircularProgress />
+        </div>
+      )}
+      <div>
+        {_.map(sessionsList, (session: any) => (
+          <WrappedSessionCard data={session} />
+        ))}
+      </div>
+    </>
   );
 };
 
-const WrappedOfferCard = withFirebase(OfferCard);
+const WrappedSessionCard = withFirebase(SessionCard);
 
-export default React.memo(YourOffers);
+export default React.memo(YourSessions);

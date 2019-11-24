@@ -10,7 +10,8 @@ import SignInPage from "__pages/SignIn";
 import withAuthentication from "components/Session/withAuthentication";
 import PasswordForgetPage from "__pages/PasswordForget";
 import AccountPage from "__pages/Account";
-import MakeSessionPage from "__pages/GiveFood";
+import MakeSessionPage from "__pages/MakeSession";
+import SearchSessionPage from "__pages/SearchSessionPage";
 
 const App: React.FC<any> = () => {
   const [open, setOpen] = useState(false);
@@ -25,6 +26,7 @@ const App: React.FC<any> = () => {
         <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
         <Route path={ROUTES.ACCOUNT} component={AccountPage} />
         <Route path={ROUTES.MAKE_SESSION} component={MakeSessionPage} />
+        <Route path={ROUTES.SEARCH_SESSION} component={SearchSessionPage} />
       </div>
     </Router>
   );

@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import AddButton from "components/Buttons/AddButton";
 import { Dialog } from "@material-ui/core";
 import { withFirebase } from "components/Firebase";
-import NewOfferDialog from "__dialogs/NewOfferDialog";
-import YourOffers from "components/YourOffers";
+import NewSessionDialog from "__dialogs/NewSessionDialog";
+import YourSessions from "components/YourSessions";
 
 const MakeSessionPage: React.FC<any> = () => {
   const [open, setOpen] = useState(false);
@@ -19,7 +19,7 @@ const MakeSessionPage: React.FC<any> = () => {
   return (
     <div>
       <AddButton onClick={handleDialogOpen} />
-      <WrappedYourOffers />
+      <WrappedYourSessions />
       <Dialog
         open={open}
         keepMounted
@@ -28,13 +28,13 @@ const MakeSessionPage: React.FC<any> = () => {
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
       >
-        <WrappedNewOfferDialog closeDialog={handleDialogClose} />
+        <WrappedNewSessionDialog closeDialog={handleDialogClose} />
       </Dialog>
     </div>
   );
 };
 
-const WrappedNewOfferDialog = withFirebase(NewOfferDialog);
-const WrappedYourOffers = withFirebase(YourOffers);
+const WrappedNewSessionDialog = withFirebase(NewSessionDialog);
+const WrappedYourSessions = withFirebase(YourSessions);
 
 export default MakeSessionPage;

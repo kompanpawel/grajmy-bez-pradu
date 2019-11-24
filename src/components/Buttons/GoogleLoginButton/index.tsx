@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, withStyles } from "@material-ui/core";
 import SvgGoogle from "components/inlineIcons/Google";
+import "./GoogleLoginButton.scss";
 
 const StyledGoogleButton = withStyles({
   root: {
@@ -17,9 +18,9 @@ const StyledGoogleButton = withStyles({
 
 const GoogleLoginButton: React.FC<any> = ({onClick}) => {
   return (
-    <StyledGoogleButton variant="contained" type="submit" fullWidth onClick={onClick} startIcon={<SvgGoogle width={30} height={30} />}>
+    <Button className="google-button" variant="contained" type="submit" fullWidth onClick={onClick} startIcon={<SvgGoogle width={30} height={30} />}>
       Sign in with Google
-    </StyledGoogleButton>
+    </Button>
   );
 };
 

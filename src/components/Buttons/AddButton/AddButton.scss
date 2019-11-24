@@ -1,0 +1,70 @@
+.add-button {
+  display: flex;
+  flex-wrap: wrap;
+  min-width: 300px;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  & .MuiButtonBase-root {
+    position: relative;
+    height: 100px;
+    width: 90%;
+    &:hover {
+      z-index: 1;
+    }
+  }
+  .image {
+    &__backdrop {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      background-color: black;
+      opacity: 0.4;
+      transition: opacity;
+      &:hover, &:focus-visible {
+        opacity: 0.15;
+      }
+    }
+    &__button {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+    &__src {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      background-size: cover;
+      background-position: center 30%;
+    }
+    &__title {
+      position: relative;
+      padding: 2px 4px 7px;
+      &:hover, &:focus-visible {
+        border: 4px solid white;
+      }
+    }
+    &__marked {
+      height: 3px;
+      width: 18px;
+      background-color: white;
+      position: absolute;
+      bottom: -2px;
+      left: calc(50% - 9px);
+      transition: opacity;
+      &:hover, &:focus-visible {
+        opacity: 0;
+      }
+    }
+  }
+}

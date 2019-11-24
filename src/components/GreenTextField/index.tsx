@@ -19,6 +19,8 @@ const GreenTextField: React.FC<IFormProps> = ({
   isPassword,
   required = true,
 }) => {
+  const isInputEmpty = state === "";
+  const errorHandling = isInputEmpty && required;
   return (
     <TextField
       className="text-field"
@@ -32,6 +34,8 @@ const GreenTextField: React.FC<IFormProps> = ({
       autoFocus={focused}
       type={isPassword ? "password" : "text"}
       onChange={(e) => setter(e.target.value)}
+      error={errorHandling}
+      helperText={errorHandling && "To pole należy wypełnić"}
     />
   );
 };

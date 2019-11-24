@@ -91,17 +91,23 @@ const NavigationMenu: React.FC<any> = ({ history, isAuth, state, setter }) => {
           </ListItemIcon>
           <ListItemText primary={"Strona główna"} />
         </ListItem>
-        <ListItem button key={"main"} onClick={() => clickHandler(ROUTES.MAKE_SESSION)}>
-          <ListItemIcon>
-            <InboxIcon />
-          </ListItemIcon>
-          <ListItemText primary={"Utwórz sesję"} />
-        </ListItem>
         <ListItem button key={"account"} onClick={() => clickHandler(ROUTES.ACCOUNT)}>
           <ListItemIcon>
             <InboxIcon />
           </ListItemIcon>
           <ListItemText primary={"Konto"} />
+        </ListItem>
+        <ListItem button key={"make-session"} onClick={() => clickHandler(ROUTES.MAKE_SESSION)}>
+          <ListItemIcon>
+            <InboxIcon />
+          </ListItemIcon>
+          <ListItemText primary={"Utwórz sesję"} />
+        </ListItem>
+        <ListItem button key={"search"} onClick={() =>clickHandler(ROUTES.SEARCH_SESSION)}>
+          <ListItemIcon>
+            <InboxIcon />
+          </ListItemIcon>
+          <ListItemText primary={"Znajdź sesję"} />
         </ListItem>
         <SignOutButton className="navigation__sign-in-button" />
       </Drawer>

@@ -1,0 +1,40 @@
+.session-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 10px;
+  &__image {
+    height: 100px;
+    opacity: 0.4;
+  }
+  &__title {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    .title-name {
+      font-size: 20px;
+      font-weight: 700;
+      align-self: end;
+    }
+
+    .title-date {
+      text-align: end;
+    }
+  }
+  &__card-actions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 90% 10%;
+
+    .status {
+      display: flex;
+      flex-direction: column;
+      width: 70%;
+    }
+    .delete-button {
+      position: relative;
+      top: 10px;
+    }
+  }
+}

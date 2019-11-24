@@ -1,0 +1,13 @@
+.your-sessions {
+  &__title {
+    text-align: center;
+    font-size: 2rem;
+    padding: 10px 0;
+  }
+  &__loader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+  }
+}
