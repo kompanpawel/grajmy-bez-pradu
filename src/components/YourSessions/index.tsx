@@ -4,7 +4,7 @@ import _ from "lodash";
 import { withFirebase } from "components/Firebase";
 import { CircularProgress } from "@material-ui/core";
 import "./YourSessions.scss";
-import SessionCard from "components/SessionCard";
+import MySessionCard from "components/MySessionCard";
 
 const YourSessions: React.FC<any> = ({ firebase }) => {
   const [userID, setUserID] = useState("");
@@ -50,6 +50,6 @@ const YourSessions: React.FC<any> = ({ firebase }) => {
   );
 };
 
-const WrappedSessionCard = withFirebase(SessionCard);
+const WrappedSessionCard = withFirebase(MySessionCard);
 
 export default React.memo(YourSessions);

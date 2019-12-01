@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import AddButton from "components/Buttons/AddButton";
 import { Dialog } from "@material-ui/core";
 import { withFirebase } from "components/Firebase";
-import NewSessionDialog from "__dialogs/NewSessionDialog";
+import NewSessionDialog from "components/__dialogs/NewSessionDialog";
 import YourSessions from "components/YourSessions";
 
 const MakeSessionPage: React.FC<any> = () => {
