@@ -1,21 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { CHANGE_SESSION_DATA, FETCH_SESSIONS_DATA } from "store/reducers/data/types";
+import { FETCH_SESSIONS_DATA } from "store/reducers/data/types";
 import SessionCard from "components/SessionCard";
 import _ from "lodash";
-import { CircularProgress } from "@material-ui/core";
+import { CircularProgress, Drawer, IconButton } from "@material-ui/core";
+import SessionDetails from "components/SearchedSessions/SessionDetails";
+import { TOGGLE_SESSION_DETAILS_DRILLDOWN } from "store/reducers/drilldowns/types";
+import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 
 const mapStateToProps = (state: any) => ({
   sessions: state.data.sessions,
-  filters: state.filters
+  filters: state.filters,
+  sessionDetailsOpen: state.drilldowns.sessionDetailsOpen,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
   getSessionsData: (sessions: any) => dispatch({ type: FETCH_SESSIONS_DATA, sessions }),
-  changeSessionData: (uid: any, session: any) => dispatch({ type: CHANGE_SESSION_DATA, session, uid }),
+  toggleSessionDetailsDrilldown: (sessionDetailsOpen: any) => dispatch({type: TOGGLE_SESSION_DETAILS_DRILLDOWN, sessionDetailsOpen})
 });
 
-const SearchedSessions: React.FC<any> = ({ firebase, sessions, filters, getSessionsData, changeSessionData }) => {
+const SearchedSessions: React.FC<any> = ({ firebase, sessions, sessionDetailsOpen, filters, getSessionsData, toggleSessionDetailsDrilldown }) => {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     firebase.sessions().on("value", (snapshot: any) => {
@@ -39,15 +43,23 @@ const SearchedSessions: React.FC<any> = ({ firebase, sessions, filters, getSessi
   }
   const preparedData = prepareData();
   return (
-    <div>
+    <div className="search-sessions">
       {loading && (
-        <div className="your-sessions__loader">
+        <div className="search-sessions__loader">
           <CircularProgress />
         </div>
       )}
       {_.map(preparedData, (sessionData: any) => (
         <SessionCard data={sessionData} />
       ))}
+      <Drawer className="search-sessions__drawer" anchor="right" open={sessionDetailsOpen}>
+        <div className="drawer-header">
+          <IconButton onClick={() => toggleSessionDetailsDrilldown(false)}>
+            <ChevronRightIcon />
+          </IconButton>
+        </div>
+        <SessionDetails />
+      </Drawer>
     </div>
   );
 };

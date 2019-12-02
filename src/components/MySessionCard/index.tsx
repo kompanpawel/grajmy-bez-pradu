@@ -30,11 +30,10 @@ interface IOfferData {
 }
 
 interface IOfferCardProps {
-  firebase: any;
   data: IOfferData;
 }
 
-const MySessionCard: React.FC<IOfferCardProps> = ({ firebase, data }) => {
+const MySessionCard: React.FC<IOfferCardProps> = ({ data }) => {
   const [status, setStatus] = useState(data.status);
 
   const handleStatusChange = (event: any) => {

@@ -6,10 +6,23 @@ const AccountPage: React.FC<any> = () => {
   return (
     <AuthUserContext.Consumer>
       {(authUser: any) => (
-        <div>
-          <h1>Account: {authUser.email}</h1>
-          <PasswordChangeForm />
-        </div>
+        <>
+          <div>
+            Nazwa użytkownika (edytuj)
+          </div>
+          <div>
+            Adres email (zmień)
+          </div>
+          <div>
+            Opcjonalne dane (telefon, adres)
+          </div>
+          <div>
+            Informacje o sobie
+          </div>
+          <div>
+            Zmień hasło
+          </div>
+        </>
       )}
     </AuthUserContext.Consumer>
   );

@@ -40,9 +40,10 @@ const SystemsDropdown: React.FC<any> = ({
   return (
     <div>
       <FormControl>
-        <InputLabel htmlFor="system-dropdown">System</InputLabel>
         <NativeSelect value={activeSystem} onChange={handleChange}>
-          <option value="" />
+          <option value="">
+            Wszystkie
+          </option>
           {_.map(systems, (item: string, index: number) => (
             <option value={item} key={index}>{item}</option>
           ))}
