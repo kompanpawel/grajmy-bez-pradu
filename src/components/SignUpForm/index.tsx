@@ -13,10 +13,17 @@ const SignUpForm: React.FC<any> = ({ firebase, history }) => {
   const [error, setError] = useState("");
 
   const onSubmit = (event: any) => {
+    const number = "";
+    const info = "";
+    const address = {
+      city: "",
+      street: "",
+      streetNumber: ""
+    };
     firebase
       .doCreateUserWithEmailAndPassword(email, passwordOne)
       .then((authUser: any) => {
-        return firebase.user(authUser.user.uid).set({ username, email });
+        return firebase.user(authUser.user.uid).set({ username, email, number, info, address });
       })
       .then(() => {
         setUsername("");

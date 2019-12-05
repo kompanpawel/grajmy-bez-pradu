@@ -51,7 +51,14 @@ const SignInForm: React.FC<any> = ({ firebase, history }) => {
       .then((authUser: any) => {
         const username = authUser.user.displayName;
         const email = authUser.user.email;
-        return firebase.user(authUser.user.uid).set({ username, email });
+        const number = "";
+        const info = "";
+        const address = {
+          city: "",
+          street: "",
+          streetNumber: ""
+        };
+        return firebase.user(authUser.user.uid).set({ username, email, number, info, address });
       })
       .then(() => {
         history.push(ROUTES.MAIN_PAGE);
