@@ -24,9 +24,7 @@
   }
   &__card-actions {
     width: 100%;
-    display: grid;
-    grid-template-columns: 90% 10%;
-
+    justify-content: flex-end;
     .status {
       display: flex;
       flex-direction: column;

@@ -1,11 +1,29 @@
 import React, { useEffect, useState } from "react";
 import _ from "lodash";
 
-import { CircularProgress } from "@material-ui/core";
+import { CircularProgress, Drawer, IconButton } from "@material-ui/core";
 import "./YourSessions.scss";
 import MySessionCard from "components/MySessionCard";
+import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import SessionDetails from "components/SearchedSessions/SessionDetails";
+import { connect } from "react-redux";
+import { TOGGLE_SESSION_DETAILS_DRILLDOWN } from "store/reducers/drilldowns/types";
 
-const YourSessions: React.FC<any> = ({ firebase }) => {
+interface IYourSessionsProps {
+  firebase: any;
+  sessionDetailsOpen: boolean;
+  toggleSessionDetailsDrilldown: (sessionDetailsOpen: boolean) => any;
+}
+
+const mapStateToProps = (state: any) => ({
+  sessionDetailsOpen: state.drilldowns.sessionDetailsOpen,
+});
+
+const mapDispatchToProps = (dispatch: any) => ({
+  toggleSessionDetailsDrilldown: (sessionDetailsOpen: boolean) => dispatch({type: TOGGLE_SESSION_DETAILS_DRILLDOWN, sessionDetailsOpen}),
+});
+
+const YourSessions: React.FC<IYourSessionsProps> = ({ firebase, sessionDetailsOpen, toggleSessionDetailsDrilldown }) => {
   const [userID, setUserID] = useState("");
   const [sessionsList, setSessionsList] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -45,9 +63,17 @@ const YourSessions: React.FC<any> = ({ firebase }) => {
           <MySessionCard data={session} key={index} />
         ))}
       </div>
+      <Drawer className="search-sessions__drawer" anchor="right" open={sessionDetailsOpen}>
+        <div className="drawer-header">
+          <IconButton onClick={() => toggleSessionDetailsDrilldown(false)}>
+            <ChevronRightIcon />
+          </IconButton>
+        </div>
+        <SessionDetails />
+      </Drawer>
     </>
   );
 };
 
 
-export default React.memo(YourSessions);
+export default connect(mapStateToProps, mapDispatchToProps)(React.memo(YourSessions));

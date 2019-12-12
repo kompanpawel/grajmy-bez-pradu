@@ -13,36 +13,46 @@ import {
 import DeleteIcon from "@material-ui/icons/Delete";
 import SessionImage from "assets/sesja.png";
 import _ from "lodash";
-import { SESSION_STATUS, ORDERS_TABLE } from "components/__dialogs/NewSessionDialog";
+import { ORDERS_TABLE } from "components/__dialogs/NewSessionDialog";
 import "components/MySessionCard/MySessionCard.scss";
-
-interface IOfferData {
-  created?: string;
-  date?: string;
-  info?: string;
-  localization: string;
-  maxPlayers: string;
-  name?: string;
-  players?: string;
-  status?: SESSION_STATUS;
-  system?: string;
-  tags: string[];
-}
+import { connect } from "react-redux";
+import { EDIT_DETAILS, TOGGLE_SESSION_DETAILS_DRILLDOWN } from "store/reducers/drilldowns/types";
 
 interface IOfferCardProps {
-  data: IOfferData;
+  data: any;
+  showSessionDetails: (data: any) => any;
+  toggleSessionDetailsDrilldown: (sessionDetailsOpen: any) => any;
+  editDetails: (editDetails: boolean) => any;
 }
 
-const MySessionCard: React.FC<IOfferCardProps> = ({ data }) => {
+const mapDispatchToProps = (dispatch: any) => ({
+  showSessionDetails: (data: any) => dispatch({ type: "SHOW_SESSION_DETAILS", data }),
+  toggleSessionDetailsDrilldown: (sessionDetailsOpen: any) =>
+    dispatch({ type: TOGGLE_SESSION_DETAILS_DRILLDOWN, sessionDetailsOpen }),
+  editDetails: (editDetails: boolean) => dispatch({ type: EDIT_DETAILS, editDetails }),
+});
+
+const MySessionCard: React.FC<IOfferCardProps> = ({
+  data,
+  showSessionDetails,
+  toggleSessionDetailsDrilldown,
+  editDetails,
+}) => {
   const [status, setStatus] = useState(data.status);
 
   const handleStatusChange = (event: any) => {
     setStatus(event.target.value);
   };
 
+  const handleCardClick = () => {
+    showSessionDetails(data);
+    toggleSessionDetailsDrilldown(true);
+    editDetails(true);
+  };
+
   return (
     <Card className="session-card">
-      <CardActionArea >
+      <CardActionArea onClick={handleCardClick}>
         <CardMedia className="session-card__image" image={SessionImage} />
         <CardContent>
           <div className="session-card__title">
@@ -52,20 +62,16 @@ const MySessionCard: React.FC<IOfferCardProps> = ({ data }) => {
         </CardContent>
       </CardActionArea>
       <CardActions className="session-card__card-actions">
-        <div className="status">
-          <InputLabel>Status sesji</InputLabel>
-          <Select value={status} onChange={handleStatusChange}>
-            {_.map(ORDERS_TABLE, (status: string) => (
-              <MenuItem value={status}>{status}</MenuItem>
-            ))}
-          </Select>
-        </div>
         <IconButton color="secondary" className="delete-button">
           <DeleteIcon />
+          Usuń
         </IconButton>
       </CardActions>
     </Card>
   );
 };
 
-export default React.memo(MySessionCard);
+export default connect(
+  null,
+  mapDispatchToProps
+)(React.memo(MySessionCard));

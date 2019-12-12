@@ -18,7 +18,8 @@ import Form from "components/Form/Form";
 import { TransitionProps } from "@material-ui/core/transitions";
 import { showError } from "utils/errors/error";
 import GoogleLoginButton from "components/Buttons/GoogleLoginButton";
-import "./SignInForm.scss"
+import "./SignInForm.scss";
+import _ from "lodash";
 
 const Transition = React.forwardRef<unknown, TransitionProps>(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -49,16 +50,18 @@ const SignInForm: React.FC<any> = ({ firebase, history }) => {
     firebase
       .doSignInWithGoogle()
       .then((authUser: any) => {
-        const username = authUser.user.displayName;
-        const email = authUser.user.email;
-        const number = "";
-        const info = "";
-        const address = {
-          city: "",
-          street: "",
-          streetNumber: ""
-        };
-        return firebase.user(authUser.user.uid).set({ username, email, number, info, address });
+        if (_.isNil(firebase.user(authUser.user.uid))) {
+          const username = authUser.user.displayName;
+          const email = authUser.user.email;
+          const number = "";
+          const info = "";
+          const address = {
+            city: "",
+            street: "",
+            streetNumber: "",
+          };
+          return firebase.user(authUser.user.uid).set({ username, email, number, info, address });
+        }
       })
       .then(() => {
         history.push(ROUTES.MAIN_PAGE);
