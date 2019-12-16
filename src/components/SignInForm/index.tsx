@@ -50,18 +50,20 @@ const SignInForm: React.FC<any> = ({ firebase, history }) => {
     firebase
       .doSignInWithGoogle()
       .then((authUser: any) => {
-        if (_.isNil(firebase.user(authUser.user.uid))) {
-          const username = authUser.user.displayName;
-          const email = authUser.user.email;
-          const number = "";
-          const info = "";
-          const address = {
-            city: "",
-            street: "",
-            streetNumber: "",
-          };
-          return firebase.user(authUser.user.uid).set({ username, email, number, info, address });
-        }
+        firebase.user(authUser.user.uid).once("value", (snapshot: any) => {
+          if (_.isNil(snapshot.val())) {
+            const username = authUser.user.displayName;
+            const email = authUser.user.email;
+            const number = "";
+            const info = "";
+            const address = {
+              city: "",
+              street: "",
+              streetNumber: "",
+            };
+            return firebase.user(authUser.user.uid).set({ username, email, number, info, address });
+          }
+        });
       })
       .then(() => {
         history.push(ROUTES.MAIN_PAGE);

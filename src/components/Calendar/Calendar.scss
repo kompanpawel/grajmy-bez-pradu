@@ -1,0 +1,32 @@
+@import '../../../node_modules/@fullcalendar/core/main.css';
+@import '../../../node_modules/@fullcalendar/daygrid/main.css';
+@import '../../../node_modules/@fullcalendar/timegrid/main.css';
+
+.calendar {
+  font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+  font-size: 14px;
+}
+
+.calendar-main {
+  margin: 0 auto;
+  max-width: 900px;
+  .fc-header-toolbar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "date date"
+      "changeMonth changeView";
+    .fc-center {
+      grid-area: date;
+      text-align: center;
+    }
+    .fc-left {
+      grid-area: changeMonth;
+      justify-self: left;
+    }
+    .fc-right {
+      grid-area: changeView;
+      justify-self: end;
+    }
+  }
+}

@@ -7,6 +7,7 @@ import { CircularProgress, Drawer, IconButton } from "@material-ui/core";
 import SessionDetails from "components/SearchedSessions/SessionDetails";
 import { TOGGLE_SESSION_DETAILS_DRILLDOWN } from "store/reducers/drilldowns/types";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import { getFilteredData } from "store/reducers/data/dataReducer";
 
 const mapStateToProps = (state: any) => ({
   sessions: state.data.sessions,
@@ -16,10 +17,18 @@ const mapStateToProps = (state: any) => ({
 
 const mapDispatchToProps = (dispatch: any) => ({
   getSessionsData: (sessions: any) => dispatch({ type: FETCH_SESSIONS_DATA, sessions }),
-  toggleSessionDetailsDrilldown: (sessionDetailsOpen: any) => dispatch({type: TOGGLE_SESSION_DETAILS_DRILLDOWN, sessionDetailsOpen})
+  toggleSessionDetailsDrilldown: (sessionDetailsOpen: any) =>
+    dispatch({ type: TOGGLE_SESSION_DETAILS_DRILLDOWN, sessionDetailsOpen }),
 });
 
-const SearchedSessions: React.FC<any> = ({ firebase, sessions, sessionDetailsOpen, filters, getSessionsData, toggleSessionDetailsDrilldown }) => {
+const SearchedSessions: React.FC<any> = ({
+  firebase,
+  sessions,
+  sessionDetailsOpen,
+  filters,
+  getSessionsData,
+  toggleSessionDetailsDrilldown,
+}) => {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     firebase.sessions().on("value", (snapshot: any) => {
@@ -32,16 +41,7 @@ const SearchedSessions: React.FC<any> = ({ firebase, sessions, sessionDetailsOpe
     });
   }, [firebase, getSessionsData]);
 
-  const prepareData = () => {
-    if(filters.system !== "") {
-      return _.filter(sessions, (session: any) => {
-        return session.system === filters.system;
-      })
-    } else {
-      return sessions;
-    }
-  }
-  const preparedData = prepareData();
+  const preparedData = getFilteredData(sessions, filters);
   return (
     <div className="search-sessions">
       {loading && (

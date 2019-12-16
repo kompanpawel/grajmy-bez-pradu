@@ -18,7 +18,7 @@ import "components/MySessionCard/MySessionCard.scss";
 import { connect } from "react-redux";
 import { EDIT_DETAILS, TOGGLE_SESSION_DETAILS_DRILLDOWN } from "store/reducers/drilldowns/types";
 
-interface IOfferCardProps {
+interface IMySessionCardProps {
   data: any;
   showSessionDetails: (data: any) => any;
   toggleSessionDetailsDrilldown: (sessionDetailsOpen: any) => any;
@@ -32,7 +32,7 @@ const mapDispatchToProps = (dispatch: any) => ({
   editDetails: (editDetails: boolean) => dispatch({ type: EDIT_DETAILS, editDetails }),
 });
 
-const MySessionCard: React.FC<IOfferCardProps> = ({
+const MySessionCard: React.FC<IMySessionCardProps> = ({
   data,
   showSessionDetails,
   toggleSessionDetailsDrilldown,

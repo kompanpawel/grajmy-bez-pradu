@@ -1,4 +1,5 @@
 import { CHANGE_SESSION_DATA, FETCH_SESSIONS_DATA, FETCH_SYSTEM_TYPES_DATA } from "store/reducers/data/types";
+import { IFilters } from "store/reducers/filters/types";
 
 const INITIAL_STATE = {
   systemTypes: [],
@@ -37,6 +38,19 @@ const dataReducer = (state = INITIAL_STATE, action: any) => {
     default:
       return state;
   }
+};
+
+export const getFilteredData = (sessions: any, filters: IFilters) => {
+  return sessions
+    .filter((session: any) => {
+      return session.maxPlayers >= filters.maxPlayers[0] && session.maxPlayers <= filters.maxPlayers[1];
+    })
+    .filter((session: any) => {
+      if (filters.system === "") {
+        return session;
+      }
+      return session.system === filters.system;
+    });
 };
 
 export default dataReducer;

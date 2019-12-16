@@ -1,11 +1,12 @@
 import React from "react";
 import { withAuthorization } from "components/Session";
+import Calendar from "components/Calendar";
 
 const MainPage: React.FC = () => {
   return (
     <div>
       <div>
-        Jakiś kalendarz
+        <Calendar />
       </div>
       <div>
         Co może być na stronie startowej, co jest wazne?

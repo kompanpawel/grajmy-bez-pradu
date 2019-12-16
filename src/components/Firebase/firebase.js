@@ -39,8 +39,6 @@ class Firebase {
 
   users = () => this.db.ref("users");
 
-  foodCategories = () => this.db.ref("food_categories");
-
   session = (uid) => this.db.ref(`sessions/${uid}`);
 
   sessions = () => this.db.ref("sessions");

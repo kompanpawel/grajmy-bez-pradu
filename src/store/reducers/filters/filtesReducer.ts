@@ -1,6 +1,6 @@
-import { MAX_PLAYER_CHANGE, SYSTEM_CHANGE } from "store/reducers/filters/types";
+import { IFilters, MAX_PLAYER_CHANGE, SYSTEM_CHANGE } from "store/reducers/filters/types";
 
-const INITIAL_STATE = {
+const INITIAL_STATE: IFilters = {
   maxPlayers: [2, 5],
   system: ""
 }
