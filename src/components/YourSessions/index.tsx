@@ -8,6 +8,7 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import SessionDetails from "components/SearchedSessions/SessionDetails";
 import { connect } from "react-redux";
 import { TOGGLE_SESSION_DETAILS_DRILLDOWN } from "store/reducers/drilldowns/types";
+import DetailsDrawer from "components/DetailsDrawer";
 
 interface IYourSessionsProps {
   firebase: any;
@@ -63,14 +64,7 @@ const YourSessions: React.FC<IYourSessionsProps> = ({ firebase, sessionDetailsOp
           <MySessionCard data={session} key={index} />
         ))}
       </div>
-      <Drawer className="search-sessions__drawer" anchor="right" open={sessionDetailsOpen}>
-        <div className="drawer-header">
-          <IconButton onClick={() => toggleSessionDetailsDrilldown(false)}>
-            <ChevronRightIcon />
-          </IconButton>
-        </div>
-        <SessionDetails />
-      </Drawer>
+      <DetailsDrawer />
     </>
   );
 };

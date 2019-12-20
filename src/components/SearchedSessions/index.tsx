@@ -8,26 +8,22 @@ import SessionDetails from "components/SearchedSessions/SessionDetails";
 import { TOGGLE_SESSION_DETAILS_DRILLDOWN } from "store/reducers/drilldowns/types";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import { getFilteredData } from "store/reducers/data/dataReducer";
+import DetailsDrawer from "components/DetailsDrawer";
 
 const mapStateToProps = (state: any) => ({
   sessions: state.data.sessions,
   filters: state.filters,
-  sessionDetailsOpen: state.drilldowns.sessionDetailsOpen,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
   getSessionsData: (sessions: any) => dispatch({ type: FETCH_SESSIONS_DATA, sessions }),
-  toggleSessionDetailsDrilldown: (sessionDetailsOpen: any) =>
-    dispatch({ type: TOGGLE_SESSION_DETAILS_DRILLDOWN, sessionDetailsOpen }),
 });
 
 const SearchedSessions: React.FC<any> = ({
   firebase,
   sessions,
-  sessionDetailsOpen,
   filters,
   getSessionsData,
-  toggleSessionDetailsDrilldown,
 }) => {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -52,14 +48,7 @@ const SearchedSessions: React.FC<any> = ({
       {_.map(preparedData, (sessionData: any) => (
         <SessionCard data={sessionData} />
       ))}
-      <Drawer className="search-sessions__drawer" anchor="right" open={sessionDetailsOpen}>
-        <div className="drawer-header">
-          <IconButton onClick={() => toggleSessionDetailsDrilldown(false)}>
-            <ChevronRightIcon />
-          </IconButton>
-        </div>
-        <SessionDetails />
-      </Drawer>
+      <DetailsDrawer />
     </div>
   );
 };

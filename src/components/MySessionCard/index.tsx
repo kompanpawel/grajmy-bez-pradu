@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ReactNode, useCallback, useState } from "react";
 import {
   Card,
   CardActionArea,
@@ -17,9 +17,13 @@ import { ORDERS_TABLE } from "components/__dialogs/NewSessionDialog";
 import "components/MySessionCard/MySessionCard.scss";
 import { connect } from "react-redux";
 import { EDIT_DETAILS, TOGGLE_SESSION_DETAILS_DRILLDOWN } from "store/reducers/drilldowns/types";
+import { compose } from "recompose";
+import { withFirebase } from "components/Firebase";
+import ConfirmDialog from "components/__dialogs/ConfirmDialog";
 
 interface IMySessionCardProps {
   data: any;
+  firebase: any;
   showSessionDetails: (data: any) => any;
   toggleSessionDetailsDrilldown: (sessionDetailsOpen: any) => any;
   editDetails: (editDetails: boolean) => any;
@@ -32,17 +36,28 @@ const mapDispatchToProps = (dispatch: any) => ({
   editDetails: (editDetails: boolean) => dispatch({ type: EDIT_DETAILS, editDetails }),
 });
 
+const dialogText = "Czy na pewno chcesz usunąć sesję?";
+
 const MySessionCard: React.FC<IMySessionCardProps> = ({
   data,
+  firebase,
   showSessionDetails,
   toggleSessionDetailsDrilldown,
   editDetails,
 }) => {
-  const [status, setStatus] = useState(data.status);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
-  const handleStatusChange = (event: any) => {
-    setStatus(event.target.value);
+  const handleDialogClose = () => {
+    setDialogOpen(false);
   };
+
+  const handleDialogOpen = () => {
+    setDialogOpen(true);
+  };
+
+  const handleSessionDelete = useCallback(() => {
+    return firebase.session(data.uuid).remove();
+  }, [data.uuid, firebase]);
 
   const handleCardClick = () => {
     showSessionDetails(data);
@@ -62,16 +77,28 @@ const MySessionCard: React.FC<IMySessionCardProps> = ({
         </CardContent>
       </CardActionArea>
       <CardActions className="session-card__card-actions">
-        <IconButton color="secondary" className="delete-button">
+        <IconButton color="secondary" className="delete-button" onClick={handleDialogOpen}>
           <DeleteIcon />
           Usuń
         </IconButton>
       </CardActions>
+      {dialogOpen && (
+        <ConfirmDialog
+          text={dialogText}
+          state={dialogOpen}
+          closeHandler={handleDialogClose}
+          confirmHandler={handleSessionDelete}
+        />
+      )}
     </Card>
   );
 };
 
-export default connect(
-  null,
-  mapDispatchToProps
+export default compose(
+  connect(
+    null,
+    mapDispatchToProps
+  ),
+  withFirebase
+  // @ts-ignore
 )(React.memo(MySessionCard));

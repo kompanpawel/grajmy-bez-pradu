@@ -9,28 +9,14 @@ import ViewingDetails from "components/SearchedSessions/ViewingDetails";
 import EditableDetails from "components/SearchedSessions/EditableDetails";
 
 const mapStateToProps = (state: any) => ({
-  open: state.drilldowns.sessionDetailsOpen,
-  sessionDetails: state.sessionDetails.data,
   editDetails: state.drilldowns.editDetails,
 });
 
-const mapDispatchToProps = (dispatch: any) => ({
-  toggleSessionDetailsDrilldown: (toggle: any) => dispatch({ type: TOGGLE_SESSION_DETAILS_DRILLDOWN, toggle }),
-});
-
-const SessionDetails: React.FC<any> = ({ firebase, sessionDetails, toggleSessionDetailsDrilldown, editDetails }) => {
-
-  return (
-    <div>
-      {editDetails ?  <EditableDetails /> : <ViewingDetails />}
-    </div>
-  )
+const SessionDetails: React.FC<any> = ({ editDetails }) => {
+  return <div>{editDetails ? <EditableDetails /> : <ViewingDetails />}</div>;
 };
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps),
   withFirebase
 )(React.memo(SessionDetails));
