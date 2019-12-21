@@ -13,8 +13,10 @@ const mapStateToProps = (state: any) => ({
 });
 
 const SessionDetails: React.FC<any> = ({ editDetails }) => {
-  return <div>{editDetails ? <EditableDetails /> : <ViewingDetails />}</div>;
+  return <div>{editDetails ? <WrappedEditableDetails /> : <ViewingDetails />}</div>;
 };
+
+const WrappedEditableDetails = withFirebase(EditableDetails);
 
 export default compose(
   connect(mapStateToProps),

@@ -69,5 +69,4 @@ const YourSessions: React.FC<IYourSessionsProps> = ({ firebase, sessionDetailsOp
   );
 };
 
-
 export default connect(mapStateToProps, mapDispatchToProps)(React.memo(YourSessions));

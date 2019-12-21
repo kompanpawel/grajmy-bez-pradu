@@ -1,47 +1,58 @@
 import React, { useEffect, useState } from "react";
 import { compose } from "recompose";
 import { connect } from "react-redux";
-import { withFirebase } from "components/Firebase";
 import _ from "lodash";
-import { Button } from "@material-ui/core";
+import { Button, IconButton, Table, TableBody, TableCell, TableHead, TableRow } from "@material-ui/core";
+import CheckIcon from "@material-ui/icons/Check";
+import ClearIcon from "@material-ui/icons/Clear";
+import UsersTable from "components/UsersTable";
 
 const mapStateToProps = (state: any) => ({
   sessionDetails: state.sessionDetails.data,
 });
 
+const columns = [{ title: "Nazwa użytkownika", field: "username" }, { title: "Rola", field: "role" }];
+
 const EditableDetails: React.FC<any> = ({ firebase, sessionDetails }) => {
-  const [willingDisabled, setWillingDisabled] = useState(false);
-  const [willingPlayers, setWillingPlayers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [playersID, setPlayersID] = useState([]);
+  const [willingPlayers, setWillingPlayers] = useState([{}]);
 
   useEffect(() => {
     firebase
       .session(sessionDetails.uuid)
-      .child("willing")
-      .once("value", (snapshot: any) => {
-        if (_.isNil(snapshot.val())) {
-          setWillingDisabled(true);
-        } else {
-          const array: any = [];
-          snapshot.forEach((item: any) => {
-            array.push(item.val());
+      .orderByKey()
+      .equalTo("willing")
+      .on("value", (willingPlayersDatasnapshot: any) => {
+        const data = willingPlayersDatasnapshot.val().willing;
+        _.forEach(data, (id: any) => {
+          firebase.user(id).on("value", (userDataSnapshot: any) => {
+            setWillingPlayers((state) => {
+              return state.concat({
+                username: userDataSnapshot.val().username,
+                role: "Player",
+                uid: id,
+              });
+            });
           });
-          setWillingPlayers(array);
-          setWillingDisabled(false);
-        }
+        });
       });
   }, [firebase, sessionDetails.uuid]);
+
+  const createUsersTable = () => {
+    const filteredData = _.filter(willingPlayers, (row: any) => {
+      return !_.isEmpty(row);
+    });
+    console.log(filteredData);
+    return <UsersTable data={filteredData} />;
+  };
 
   return (
     <div>
       <div>{sessionDetails.name}</div>
-      <Button variant="contained" color="primary" disabled={willingDisabled}>
-        {willingDisabled ? "Chętnych graczy: 0" : `Chętnych graczy: ${willingPlayers.length}`}
-      </Button>
+      {createUsersTable()}
     </div>
   );
 };
 
-export default compose(
-  connect(mapStateToProps),
-  withFirebase
-)(React.memo(EditableDetails));
+export default compose(connect(mapStateToProps))(React.memo(EditableDetails));
