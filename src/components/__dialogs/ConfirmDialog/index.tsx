@@ -15,10 +15,10 @@ const ConfirmDialog: React.FC<IConfirmDialogProps> = ({state, text, closeHandler
       <div>{text}</div>
       <div>
         <Button type="submit" variant="contained" onClick={confirmHandler}>
-          Usuń
+          Potwierdź
         </Button>
         <Button type="submit" variant="contained" onClick={closeHandler}>
-          Zamknij
+          Anuluj
         </Button>
       </div>
     </Dialog>

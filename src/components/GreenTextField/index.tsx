@@ -1,13 +1,19 @@
-import React from "react";
+import React, {useCallback} from "react";
 import { TextField } from "@material-ui/core";
 import "./GreenTextField.scss";
+import _ from "lodash";
+
+export enum FORM_TYPES {
+  NUMERIC = "NUMERIC"
+}
 
 interface IFormProps {
   label: string;
-  state: string;
+  state: string | number;
   setter: any;
   focused?: boolean;
   isPassword?: true;
+  type?: FORM_TYPES;
   required?: false;
 }
 
@@ -18,9 +24,14 @@ const GreenTextField: React.FC<IFormProps> = ({
   focused = false,
   isPassword,
   required = true,
+  type
 }) => {
   const isInputEmpty = state === "";
   const errorHandling = isInputEmpty && required;
+  const numberState = Number(state)
+  const numericError = type === FORM_TYPES.NUMERIC && !_.isFinite(numberState);
+  const errorText = errorHandling ? "To pole należy wypełnić" : numericError ? "Pole musi zawierać cyfrę" : "";
+
   return (
     <TextField
       className="text-field"
@@ -34,8 +45,8 @@ const GreenTextField: React.FC<IFormProps> = ({
       autoFocus={focused}
       type={isPassword ? "password" : "text"}
       onChange={(e) => setter(e.target.value)}
-      error={errorHandling}
-      helperText={errorHandling && "To pole należy wypełnić"}
+      error={errorHandling || numericError}
+      helperText={errorText}
     />
   );
 };

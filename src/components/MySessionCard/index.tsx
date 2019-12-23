@@ -56,7 +56,9 @@ const MySessionCard: React.FC<IMySessionCardProps> = ({
   };
 
   const handleSessionDelete = useCallback(() => {
-    return firebase.session(data.uuid).remove();
+    return firebase
+        .session(data.uuid).remove()
+        .then(() => {setDialogOpen(false)});
   }, [data.uuid, firebase]);
 
   const handleCardClick = () => {

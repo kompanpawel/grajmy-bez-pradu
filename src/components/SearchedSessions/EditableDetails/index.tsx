@@ -43,7 +43,6 @@ const EditableDetails: React.FC<any> = ({ firebase, sessionDetails }) => {
     const filteredData = _.filter(willingPlayers, (row: any) => {
       return !_.isEmpty(row);
     });
-    console.log(filteredData);
     return <UsersTable data={filteredData} />;
   };
 
