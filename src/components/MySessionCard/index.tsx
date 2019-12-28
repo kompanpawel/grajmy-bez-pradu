@@ -1,19 +1,14 @@
-import React, { ReactNode, useCallback, useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   Card,
   CardActionArea,
   CardContent,
   CardMedia,
   CardActions,
-  MenuItem,
-  Select,
-  InputLabel,
   IconButton,
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import SessionImage from "assets/sesja.png";
-import _ from "lodash";
-import { ORDERS_TABLE } from "components/__dialogs/NewSessionDialog";
 import "components/MySessionCard/MySessionCard.scss";
 import { connect } from "react-redux";
 import { EDIT_DETAILS, TOGGLE_SESSION_DETAILS_DRILLDOWN } from "store/reducers/drilldowns/types";
@@ -96,11 +91,10 @@ const MySessionCard: React.FC<IMySessionCardProps> = ({
   );
 };
 
-export default compose(
+export default compose<IMySessionCardProps, any>(
   connect(
     null,
     mapDispatchToProps
   ),
   withFirebase
-  // @ts-ignore
 )(React.memo(MySessionCard));

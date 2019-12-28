@@ -9,6 +9,7 @@ import SessionDetails from "components/SearchedSessions/SessionDetails";
 import { connect } from "react-redux";
 import { TOGGLE_SESSION_DETAILS_DRILLDOWN } from "store/reducers/drilldowns/types";
 import DetailsDrawer from "components/DetailsDrawer";
+import moment from "moment";
 
 interface IYourSessionsProps {
   firebase: any;
@@ -42,7 +43,12 @@ const YourSessions: React.FC<IYourSessionsProps> = ({ firebase, sessionDetailsOp
             snapshot.forEach((item: any) => {
               array.push(item.val());
             });
-            setSessionsList(array);
+            const sortedArray = array.sort((a: any, b: any) => {
+              const firstDate: any = moment(a.date, "D.MM.YYYY H:mm").toDate();
+              const secondDate: any = moment(b.date, "D.MM.YYYY H:mm").toDate();
+              return firstDate - secondDate;
+            });
+            setSessionsList(sortedArray);
             setLoading(false);
           });
       } else {

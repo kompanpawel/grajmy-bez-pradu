@@ -1,1 +1,0 @@
-export const CHANGE_TITLE_NAME = "CHANGE_TITLE_NAME";

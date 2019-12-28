@@ -6,7 +6,7 @@ interface IDatePickerProps {
   state: Date;
   setter: any;
 }
-const DatePicker: React.FC<IDatePickerProps> = ({ state, setter }) => {
+const DatePicker: React.FC<IDatePickerProps> = ({ state, setter}) => {
   return (
     <div>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>

@@ -4,7 +4,8 @@ import "./GreenTextField.scss";
 import _ from "lodash";
 
 export enum FORM_TYPES {
-  NUMERIC = "NUMERIC"
+  NUMERIC = "NUMERIC",
+  MULTILINE = "MULTILINE",
 }
 
 interface IFormProps {
@@ -38,6 +39,7 @@ const GreenTextField: React.FC<IFormProps> = ({
       variant="outlined"
       margin="normal"
       required={required}
+      multiline={type === FORM_TYPES.MULTILINE}
       fullWidth
       label={label}
       value={state}

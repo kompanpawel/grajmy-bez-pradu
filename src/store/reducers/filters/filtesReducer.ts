@@ -1,7 +1,7 @@
 import { IFilters, MAX_PLAYER_CHANGE, SYSTEM_CHANGE } from "store/reducers/filters/types";
 
 const INITIAL_STATE: IFilters = {
-  maxPlayers: [2, 5],
+  maxPlayers: [2, 12],
   system: ""
 }
 

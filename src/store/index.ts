@@ -5,6 +5,11 @@ import { composeWithDevTools } from "redux-devtools-extension";
 
 const initialState = {};
 
-const store = createStore(rootReducer, initialState, composeWithDevTools(applyMiddleware(thunk)));
+const devTools =
+  process.env.NODE_ENV === "production"
+    ? applyMiddleware(thunk)
+    : composeWithDevTools(applyMiddleware(thunk))
+
+const store = createStore(rootReducer, initialState, devTools);
 
 export default store;

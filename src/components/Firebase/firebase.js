@@ -42,6 +42,9 @@ class Firebase {
   session = (uid) => this.db.ref(`sessions/${uid}`);
 
   sessions = () => this.db.ref("sessions");
+
+  systems = () => this.db.ref("systems");
+
 }
 
 export default Firebase;

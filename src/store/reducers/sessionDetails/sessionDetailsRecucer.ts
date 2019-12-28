@@ -1,5 +1,5 @@
 const INITIAL_STATE = {
-  data: {}
+  data: {},
 }
 
 const showSessionDetails = (state: any, action: any) => ({
