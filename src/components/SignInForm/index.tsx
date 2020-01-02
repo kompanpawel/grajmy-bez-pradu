@@ -20,6 +20,7 @@ import { showError } from "utils/errors/error";
 import GoogleLoginButton from "components/Buttons/GoogleLoginButton";
 import "./SignInForm.scss";
 import _ from "lodash";
+import FacebookLoginButton from "components/Buttons/FacebookLoginButton";
 
 const Transition = React.forwardRef<unknown, TransitionProps>(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -44,6 +45,34 @@ const SignInForm: React.FC<any> = ({ firebase, history }) => {
         setOpenError(true);
       });
     event.preventDefault();
+  };
+
+  const facebookLogin = () => {
+    firebase
+      .doSignInWithFacebook()
+      .then((authUser: any) => {
+        firebase.user(authUser.user.uid).once("value", (snapshot: any) => {
+          if (_.isNil(snapshot.val())) {
+            const username = authUser.user.displayName;
+            const email = authUser.user.email;
+            const number = "";
+            const info = "";
+            const address = {
+              city: "",
+              street: "",
+              streetNumber: "",
+            };
+            return firebase.user(authUser.user.uid).set({ username, email, number, info, address });
+          }
+        });
+      })
+      .then(() => {
+        history.push(ROUTES.MAIN_PAGE);
+      })
+      .catch((error: any) => {
+        setError(error);
+        setOpenError(true);
+      });
   };
 
   const googleLogin = () => {
@@ -101,6 +130,7 @@ const SignInForm: React.FC<any> = ({ firebase, history }) => {
           </Grid>
         </Form>
         <GoogleLoginButton onClick={googleLogin} />
+        <FacebookLoginButton onClick={facebookLogin} />
       </div>
       <Dialog
         open={openError}
