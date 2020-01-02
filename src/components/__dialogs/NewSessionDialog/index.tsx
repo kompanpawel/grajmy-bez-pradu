@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Form from "components/Form/Form";
 import GreenTextField, { FORM_TYPES } from "components/GreenTextField";
 import _ from "lodash";
@@ -6,15 +6,42 @@ import SubmitButton from "components/Buttons/SubmitButton";
 import { v1 } from "uuid";
 import moment from "moment";
 import DatePicker from "components/DatePicker";
-import StatusDropdown, {SESSION_STATUS} from "components/StatusDropdown";
+import StatusDropdown, { SESSION_STATUS } from "components/StatusDropdown";
+import { Autocomplete } from "@material-ui/lab";
+import { connect } from "react-redux";
+import { FETCH_SYSTEM_TYPES_DATA } from "store/reducers/data/types";
+import { SYSTEM_CHANGE } from "store/reducers/filters/types";
+import { TextField } from "@material-ui/core";
 
-const NewSessionDialog: React.FC<any> = ({ firebase, closeDialog }) => {
+const mapStateToProps = (state: any) => ({
+  systems: state.data.systemTypes,
+});
+
+const mapDispatchToProps = (dispatch: any) => ({
+  getSystemTypesData: (systemTypes: any) => dispatch({ type: FETCH_SYSTEM_TYPES_DATA, systemTypes }),
+});
+
+const NewSessionDialog: React.FC<any> = ({ firebase, closeDialog, systems, getSystemTypesData }) => {
   const [dateState, setDateState] = useState(new Date());
   const [maxPlayers, setMaxPlayers] = useState("");
   const [name, setName] = useState("");
   const [status, setStatus] = useState(SESSION_STATUS.LOOKING_FOR_PLAYERS);
   const [system, setSystem] = useState("");
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    firebase
+      .systems()
+      .orderByValue()
+      .on("value", (snapshot: any) => {
+        const array: any = [];
+        snapshot.forEach((item: any) => {
+          array.push(item.val());
+        });
+        getSystemTypesData(array);
+      });
+  }, [firebase, getSystemTypesData]);
+
   const onSubmit = (event: any) => {
     const uuid = v1();
     const user = firebase.auth.currentUser.uid;
@@ -45,6 +72,19 @@ const NewSessionDialog: React.FC<any> = ({ firebase, closeDialog }) => {
         localization,
       })
       .then(() => {
+        firebase
+          .systems()
+          .orderByValue()
+          .once("value", (snapshot: any) => {
+            const filteredData = _.filter(snapshot.val(), (item: any) => {
+              return item === system;
+            });
+            if (filteredData.length === 0) {
+              firebase.systems().push(system);
+            }
+          });
+      })
+      .then(() => {
         closeDialog();
         setDateState(new Date());
         setMaxPlayers("");
@@ -62,13 +102,40 @@ const NewSessionDialog: React.FC<any> = ({ firebase, closeDialog }) => {
     setStatus(event.target.value);
   };
 
-  const isInvalid = name === "" || system === "" || maxPlayers === "" || !_.isFinite(Number(maxPlayers));
+  const handleSystemChange = (event: any, value: any) => {
+    console.log("change")
+    setSystem(value);
+  };
+
+  const isInputEmpty = (input: any) => {
+    return input === "" || _.isNil(input);
+  };
+
+  const isInvalid = name === "" || isInputEmpty(system) || maxPlayers === "" || !_.isFinite(Number(maxPlayers));
 
   return (
     <div>
       <Form title={"Dodaj sesję"} onSubmit={onSubmit}>
         <GreenTextField label={"Nazwa"} state={name} setter={setName} focused={true} />
-        <GreenTextField label={"System"} state={system} setter={setSystem} />
+        <Autocomplete
+          id="system-free"
+          freeSolo
+          options={systems}
+          onChange={handleSystemChange}
+          value={system}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="System"
+              margin="normal"
+              variant="outlined"
+              fullWidth
+              required
+              error={isInputEmpty(system)}
+              helperText={isInputEmpty(system) && "To pole należy wypełnić"}
+            />
+          )}
+        />
         <GreenTextField
           label={"Maksymalna liczba graczy"}
           state={maxPlayers}
@@ -83,4 +150,4 @@ const NewSessionDialog: React.FC<any> = ({ firebase, closeDialog }) => {
   );
 };
 
-export default NewSessionDialog;
+export default connect(mapStateToProps, mapDispatchToProps)(React.memo(NewSessionDialog));

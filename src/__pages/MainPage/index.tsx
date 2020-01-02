@@ -2,7 +2,7 @@ import React from "react";
 import { withAuthorization } from "components/Session";
 import Calendar from "components/Calendar";
 
-const MainPage: React.FC = () => {
+const MainPage: React.FC<any> = () => {
   return (
     <div>
       <div>
