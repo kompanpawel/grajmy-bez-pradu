@@ -1,10 +1,11 @@
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import { IconButton, Table, TableBody, TableCell, TableHead, TableRow } from "@material-ui/core";
 import _ from "lodash";
 import CheckIcon from "@material-ui/icons/Check";
 import ClearIcon from "@material-ui/icons/Clear";
 import { compose } from "recompose";
 import { withFirebase } from "components/Firebase";
+import PlayerInfoDialog from "components/__dialogs/PlayerInfoDialog";
 
 export enum USER_TABLE_TYPE {
   WILLING_PLAYERS = "WILLING_PLAYERS",
@@ -26,6 +27,16 @@ export interface IPlayerTableData {
 }
 
 const UsersTable: React.FC<IUsersTableProps> = ({ data, tableType, removePlayer, acceptPlayer }) => {
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+  }
+
+  const handleDialogOpen = () => {
+    setDialogOpen(true)
+  }
+
   const titleText = () => {
     return tableType !== USER_TABLE_TYPE.WILLING_PLAYERS ? "Zaakceptowani gracze" : "Oczekujący gracze";
   };
@@ -72,7 +83,7 @@ const UsersTable: React.FC<IUsersTableProps> = ({ data, tableType, removePlayer,
         <TableBody>
           {_.map(data, (player: IPlayerTableData) => (
             <TableRow key={player.uid}>
-              <TableCell>{player.username}</TableCell>
+              <TableCell onClick={handleDialogOpen}>{player.username}</TableCell>
               <TableCell>{player.role}</TableCell>
               {tableType === USER_TABLE_TYPE.WILLING_PLAYERS && (
                 <TableCell>
@@ -88,6 +99,7 @@ const UsersTable: React.FC<IUsersTableProps> = ({ data, tableType, removePlayer,
                   </IconButton>
                 </TableCell>
               )}
+              {dialogOpen && <PlayerInfoDialog playerID={player.uid} state={dialogOpen} closeHandler={handleDialogClose}/>}
             </TableRow>
           ))}
         </TableBody>

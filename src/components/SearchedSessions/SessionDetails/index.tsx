@@ -1,10 +1,7 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { Button, Drawer } from "@material-ui/core";
+import React from "react";
 import { connect } from "react-redux";
-import { TOGGLE_SESSION_DETAILS_DRILLDOWN } from "store/reducers/drilldowns/types";
 import { withFirebase } from "components/Firebase";
 import { compose } from "recompose";
-import _ from "lodash";
 import ViewingDetails from "components/SearchedSessions/ViewingDetails";
 import EditableDetails from "components/SearchedSessions/EditableDetails";
 

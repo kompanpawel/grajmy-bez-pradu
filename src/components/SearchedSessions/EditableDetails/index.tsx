@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { compose } from "recompose";
 import { connect } from "react-redux";
-import { CircularProgress, Paper, Tab, Tabs } from "@material-ui/core";
+import { Paper, Tab, Tabs } from "@material-ui/core";
 import TabPanel from "components/TabPanel";
 import EditSessionDetails from "components/EditSessionDetails";
 import PlayersSection from "components/PlayersSection";
@@ -15,7 +15,6 @@ const mapStateToProps = (state: any) => ({
 
 const EditableDetails: React.FC<any> = ({ firebase, sessionDetails }) => {
   const [actualTab, setActualTab] = useState(0);
-  const [loading, setLoading] = useState(true);
 
   const handleTabChange = (event: React.ChangeEvent<{}>, newTab: number) => {
     setActualTab(newTab);
@@ -29,10 +28,10 @@ const EditableDetails: React.FC<any> = ({ firebase, sessionDetails }) => {
           centered
           variant="fullWidth"
           onChange={handleTabChange}
-          indicatorColor="secondary"
-          textColor="secondary"
+          indicatorColor="primary"
+          textColor="primary"
         >
-          <Tab icon={<EditIcon />} label="Edytuj dane" />
+          <Tab icon={<EditIcon />} label="Edytuj" />
           <Tab icon={<PeopleIcon />} label="Gracze" />
           <Tab icon={<ChatIcon />} label="Wiadomości" />
         </Tabs>

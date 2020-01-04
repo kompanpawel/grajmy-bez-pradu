@@ -8,6 +8,8 @@ import "./Calendar.scss";
 const Calendar: React.FC<any> = () => {
   const [events, setEvents] = useState([]);
 
+
+
   const calendarComponentRef = () => React.createRef();
 
   return (

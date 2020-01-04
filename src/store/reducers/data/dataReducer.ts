@@ -40,8 +40,11 @@ const dataReducer = (state = INITIAL_STATE, action: any) => {
   }
 };
 
-export const getFilteredData = (sessions: any, filters: IFilters) => {
+export const getFilteredData = (sessions: any, filters: IFilters, currentUser: string) => {
   return sessions
+    .filter((session: any) => {
+      return session.user !== currentUser;
+    })
     .filter((session: any) => {
       return session.maxPlayers >= filters.maxPlayers[0] && session.maxPlayers <= filters.maxPlayers[1];
     })

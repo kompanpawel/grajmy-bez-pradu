@@ -3,7 +3,7 @@ import { AuthUserContext, withAuthorization } from "components/Session";
 import { compose } from "recompose";
 import { withFirebase } from "components/Firebase";
 import GreenTextField from "components/GreenTextField";
-import { Button, CircularProgress, Dialog } from "@material-ui/core";
+import { Button, Checkbox, CircularProgress, Dialog, FormControlLabel } from "@material-ui/core";
 import MultilineTextField from "components/MultilineTextField";
 import PasswordChangeForm from "components/PasswordChangeForm";
 import SuccessDialog from "components/__dialogs/SuccessDialog/SuccessDialog";
@@ -16,6 +16,8 @@ const AccountPage: React.FC<any> = ({ firebase }) => {
   const [city, setCity] = useState("");
   const [street, setStreet] = useState("");
   const [streetNumber, setStreetNumber] = useState("");
+  const [isPlayer, setIsPlayer] = useState(true);
+  const [isGM, setIsGM] = useState(false);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -34,12 +36,22 @@ const AccountPage: React.FC<any> = ({ firebase }) => {
         setCity(receivedData.address.city);
         setStreet(receivedData.address.street);
         setStreetNumber(receivedData.address.streetNumber);
+        setIsPlayer(receivedData.roles.player);
+        setIsGM(receivedData.roles.gm);
         setLoading(false);
       });
   }, [firebase]);
 
   const handleDialogClose = () => {
     setDialogOpen(false);
+  };
+
+  const handlePlayerCheckboxChange = (event: any) => {
+    setIsPlayer(event.target.checked);
+  };
+
+  const handleGMCheckboxChange = (event: any) => {
+    setIsGM(event.target.checked);
   };
 
   const updateData = () => {
@@ -51,6 +63,10 @@ const AccountPage: React.FC<any> = ({ firebase }) => {
         email: email,
         info: info,
         number: number,
+        roles: {
+          player: isPlayer,
+          gm: isGM,
+        },
         address: {
           city: city,
           street: street,
@@ -70,6 +86,14 @@ const AccountPage: React.FC<any> = ({ firebase }) => {
         <GreenTextField label={""} state={username} setter={setUsername} />
         <div>Adres email (zmień)</div>
         <GreenTextField label={""} state={email} setter={setEmail} />
+        <FormControlLabel
+          control={<Checkbox checked={isPlayer} onChange={handlePlayerCheckboxChange} />}
+          label="Jestem graczem"
+        />
+        <FormControlLabel
+          control={<Checkbox checked={isGM} onChange={handleGMCheckboxChange} />}
+          label="Jestem GMem"
+        />
         <div>Numer telefonu(opcjonalny)</div>
         <GreenTextField label={""} state={number} setter={setNumber} required={false} />
         <div>Adres(opcjonalny)</div>
@@ -97,7 +121,7 @@ const AccountPage: React.FC<any> = ({ firebase }) => {
       {(authUser: any) => (
         <div>
           {loading ? renderLoader() : renderEditFields()}
-          {dialogOpen && <SuccessDialog state={dialogOpen} closeHandler={handleDialogClose}/>}
+          {dialogOpen && <SuccessDialog state={dialogOpen} closeHandler={handleDialogClose} />}
         </div>
       )}
     </AuthUserContext.Consumer>

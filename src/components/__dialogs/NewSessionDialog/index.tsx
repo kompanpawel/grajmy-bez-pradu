@@ -10,8 +10,8 @@ import StatusDropdown, { SESSION_STATUS } from "components/StatusDropdown";
 import { Autocomplete } from "@material-ui/lab";
 import { connect } from "react-redux";
 import { FETCH_SYSTEM_TYPES_DATA } from "store/reducers/data/types";
-import { SYSTEM_CHANGE } from "store/reducers/filters/types";
 import { TextField } from "@material-ui/core";
+import { showError } from "utils/errors/error";
 
 const mapStateToProps = (state: any) => ({
   systems: state.data.systemTypes,
@@ -85,6 +85,21 @@ const NewSessionDialog: React.FC<any> = ({ firebase, closeDialog, systems, getSy
           });
       })
       .then(() => {
+        const createdRef = firebase.user(user).child("sessions").child("created");
+        const pushKey = createdRef.push();
+        createdRef.once("value", (snapshot: any) => {
+          if (_.isNil(snapshot.val())) {
+            return firebase.user(user).update({sessions: {created: {[pushKey.key]: uuid}}})
+          }
+          const filteredData = _.filter(snapshot.val(), (item: any) => {
+            return item === uuid;
+          });
+          if (filteredData.length === 0) {
+            createdRef.push(uuid);
+          }
+        })
+      })
+      .then(() => {
         closeDialog();
         setDateState(new Date());
         setMaxPlayers("");
@@ -103,7 +118,6 @@ const NewSessionDialog: React.FC<any> = ({ firebase, closeDialog, systems, getSy
   };
 
   const handleSystemChange = (event: any, value: any) => {
-    console.log("change")
     setSystem(value);
   };
 
@@ -146,6 +160,7 @@ const NewSessionDialog: React.FC<any> = ({ firebase, closeDialog, systems, getSy
         <StatusDropdown state={status} onChange={handleStatusChange} />
         <SubmitButton text={"Dodaj sesję"} isInvalid={isInvalid} />
       </Form>
+      {error && showError(error)}
     </div>
   );
 };

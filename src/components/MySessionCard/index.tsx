@@ -1,12 +1,5 @@
 import React, { useCallback, useState } from "react";
-import {
-  Card,
-  CardActionArea,
-  CardContent,
-  CardMedia,
-  CardActions,
-  IconButton,
-} from "@material-ui/core";
+import { Card, CardActionArea, CardContent, CardMedia, CardActions, IconButton } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import SessionImage from "assets/sesja.png";
 import "components/MySessionCard/MySessionCard.scss";
@@ -52,8 +45,27 @@ const MySessionCard: React.FC<IMySessionCardProps> = ({
 
   const handleSessionDelete = useCallback(() => {
     return firebase
-        .session(data.uuid).remove()
-        .then(() => {setDialogOpen(false)});
+      .session(data.uuid)
+      .remove()
+      .then(() => {
+        const user = firebase.auth.currentUser.uid;
+        firebase
+          .user(user)
+          .child("sessions")
+          .child("created")
+          .once("value", (snapshot: any) => {
+            const key = Object.keys(snapshot.val()).find((key: any) => snapshot.val()[key] === data.uuid);
+            return firebase
+              .user(user)
+              .child("sessions")
+              .child("created")
+              .child(key)
+              .remove();
+          });
+      })
+      .then(() => {
+        setDialogOpen(false);
+      });
   }, [data.uuid, firebase]);
 
   const handleCardClick = () => {
@@ -92,9 +104,6 @@ const MySessionCard: React.FC<IMySessionCardProps> = ({
 };
 
 export default compose<IMySessionCardProps, any>(
-  connect(
-    null,
-    mapDispatchToProps
-  ),
+  connect(null, mapDispatchToProps),
   withFirebase
 )(React.memo(MySessionCard));
