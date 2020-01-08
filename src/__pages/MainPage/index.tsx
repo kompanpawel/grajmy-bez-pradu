@@ -9,7 +9,7 @@ const MainPage: React.FC<any> = () => {
         <Calendar />
       </div>
       <div>
-        Co może być na stronie startowej, co jest wazne?
+        Zapisane sesje
       </div>
     </div>
   );

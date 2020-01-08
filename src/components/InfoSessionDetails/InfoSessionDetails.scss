@@ -1,0 +1,24 @@
+.session-details-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 5px;
+  padding: 5px 0;
+  justify-items: center;
+  .MuiButton-root {
+    max-width: 200px;
+    min-width: 130px;
+  }
+}
+
+.session-details-title, .session-details-date {
+  font-weight: 700;
+  font-size: 1.7rem;
+  padding: 5px 0;
+  display: flex;
+  justify-content: center;
+  align-self: center;
+}
+
+.session-details {
+  padding: 5px 0;
+}

@@ -1,7 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
-import SearchIcon from "@material-ui/icons/Search";
 import { EDIT_DETAILS, TOGGLE_SESSION_DETAILS_DRILLDOWN } from "store/reducers/drilldowns/types";
+import { Card, CardActionArea, CardContent } from "@material-ui/core";
+import "./SessionCard.scss";
 
 interface ISessionCardProps {
   data: any;
@@ -14,12 +15,15 @@ const mapDispatchToProps = (dispatch: any) => ({
   showSessionDetails: (data: any) => dispatch({ type: "SHOW_SESSION_DETAILS", data }),
   toggleSessionDetailsDrilldown: (sessionDetailsOpen: boolean) =>
     dispatch({ type: TOGGLE_SESSION_DETAILS_DRILLDOWN, sessionDetailsOpen }),
-  editDetails: (editDetails: boolean) => dispatch({type: EDIT_DETAILS, editDetails})
+  editDetails: (editDetails: boolean) => dispatch({ type: EDIT_DETAILS, editDetails }),
 });
 
-const SessionCard: React.FC<ISessionCardProps> = ({ data, showSessionDetails, toggleSessionDetailsDrilldown, editDetails }) => {
-  const { name, system, date } = data!;
-
+const SessionCard: React.FC<ISessionCardProps> = ({
+  data,
+  showSessionDetails,
+  toggleSessionDetailsDrilldown,
+  editDetails,
+}) => {
   const detailsHandler = () => {
     showSessionDetails(data);
     toggleSessionDetailsDrilldown(true);
@@ -27,16 +31,19 @@ const SessionCard: React.FC<ISessionCardProps> = ({ data, showSessionDetails, to
   };
 
   return (
-    <div>
-      <div>Nazwa: {name}</div>
-      <div>System: {system}</div>
-      <div>Data: {date}</div>
-      <SearchIcon onClick={detailsHandler} />
-    </div>
+    <Card className="session-card">
+      <CardActionArea onClick={detailsHandler}>
+        <CardContent>
+          <div className="session-card__title">
+            <div className="title-name">{data.name}</div>
+            <div className="title-date">{data.date}</div>
+            <div className="title-system">System: {data.system}</div>
+            <div className="title-maxPlayers">Maks. liczba graczy: {data.maxPlayers}</div>
+          </div>
+        </CardContent>
+      </CardActionArea>
+    </Card>
   );
 };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(React.memo(SessionCard));
+export default connect(null, mapDispatchToProps)(React.memo(SessionCard));

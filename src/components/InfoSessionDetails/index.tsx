@@ -4,6 +4,7 @@ import { compose } from "recompose";
 import { withFirebase } from "components/Firebase";
 import { Button } from "@material-ui/core";
 import ConfirmDialog from "components/__dialogs/ConfirmDialog";
+import "./InfoSessionDetails.scss";
 
 enum SIGN_STATUS {
   ACCEPTED = "Zaakceptowano",
@@ -111,7 +112,7 @@ const InfoSessionDetails: React.FC<IInfoSessionDetailsProps> = ({ firebase, sess
           setOpenDialog(false);
         });
     }
-  }, [buttonState, firebase, sessionData.uuid]);
+  }, [buttonState, disableTabs, firebase, sessionData.uuid]);
 
   const fetchHostName = useCallback(() => {
     firebase
@@ -143,29 +144,31 @@ const InfoSessionDetails: React.FC<IInfoSessionDetailsProps> = ({ firebase, sess
   };
 
   return (
-    <div>
-      <Button variant="contained" onClick={onJoinSessionClickHandler} disabled={buttonState !== SIGN_STATUS.SIGNABLE}>
-        {buttonText()}
-      </Button>
-      {buttonState !== SIGN_STATUS.SIGNABLE && (
-        <Button variant="contained" onClick={openDialogHandler}>
-          Opuść sesję
+    <div className="session-details-container">
+      <div className="session-details-title">{sessionData.name}</div>
+      <div className="session-details-date">{sessionData.date}</div>
+      <div className="session-details-buttons">
+        <Button
+          className="signing-button"
+          variant="contained"
+          onClick={onJoinSessionClickHandler}
+          disabled={buttonState !== SIGN_STATUS.SIGNABLE}
+        >
+          {buttonText()}
         </Button>
-      )}
-      <div>
-        <div>Sesja gracza: {fetchHostName()}</div>
-        Aktualny status
-        <div>{sessionData.status}</div>
-        Nazwa sesji
-        <div>{sessionData.name}</div>
-        System
-        <div>{sessionData.system}</div>
-        Data sesji
-        <div>{sessionData.date}</div>
-        Maksymalna ilośc graczy
-        <div>{sessionData.maxPlayers}</div>
-        Dodatkowe info
-        <div>{sessionData.info}</div>
+        {buttonState !== SIGN_STATUS.SIGNABLE && (
+          <Button className="unsigning-button" variant="contained" onClick={openDialogHandler}>
+            Opuść sesję
+          </Button>
+        )}
+      </div>
+      <div className="session-details">
+        <div className="session-details__creator">Twórca sesji: {fetchHostName()}</div>
+        <div>Aktualny status: {sessionData.status}</div>
+        <div>System: {sessionData.system}</div>
+
+        <div>Maksymalna ilośc graczy: {sessionData.maxPlayers}</div>
+        <div>Dodatkowe info: {sessionData.info}</div>
       </div>
       {openDialog && (
         <ConfirmDialog

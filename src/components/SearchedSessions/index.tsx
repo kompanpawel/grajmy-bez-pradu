@@ -1,14 +1,12 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { FETCH_SESSIONS_DATA } from "store/reducers/data/types";
 import SessionCard from "components/SessionCard";
 import _ from "lodash";
-import { CircularProgress, Drawer, IconButton } from "@material-ui/core";
-import SessionDetails from "components/SearchedSessions/SessionDetails";
-import { TOGGLE_SESSION_DETAILS_DRILLDOWN } from "store/reducers/drilldowns/types";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import { CircularProgress } from "@material-ui/core";
 import { getFilteredData } from "store/reducers/data/dataReducer";
 import DetailsDrawer from "components/DetailsDrawer";
+import "./SearchedSessions.scss";
 
 const mapStateToProps = (state: any) => ({
   sessions: state.data.sessions,
