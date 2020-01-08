@@ -28,9 +28,9 @@ const SessionCard: React.FC<ISessionCardProps> = ({ data, showSessionDetails, to
 
   return (
     <div>
-      <div>{name}</div>
-      <div>{system}</div>
-      <div>{date}</div>
+      <div>Nazwa: {name}</div>
+      <div>System: {system}</div>
+      <div>Data: {date}</div>
       <SearchIcon onClick={detailsHandler} />
     </div>
   );

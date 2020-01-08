@@ -10,13 +10,14 @@ import ChatIcon from "@material-ui/icons/Chat";
 import TabPanel from "components/TabPanel";
 import InfoSessionDetails from "components/InfoSessionDetails";
 import ViewPlayersSection from "components/ViewPlayersSection";
+import Messages from "components/Messages";
 
 const mapStateToProps = (state: any) => ({
   sessionDetails: state.sessionDetails.data,
 });
 
 const ViewingDetails: React.FC<any> = ({ firebase, sessionDetails }) => {
-  const [disableTabs, setDisableTabs] = useState(false);
+  const [disableTabs, setDisableTabs] = useState(true);
   const [actualTab, setActualTab] = useState(0);
 
   const handleTabChange = (event: React.ChangeEvent<{}>, newTab: number) => {
@@ -53,7 +54,7 @@ const ViewingDetails: React.FC<any> = ({ firebase, sessionDetails }) => {
           <ViewPlayersSection sessionID={sessionDetails.uuid} />
         </TabPanel>
         <TabPanel value={actualTab} index={2}>
-          a
+          <Messages sessionID={sessionDetails.uuid} />
         </TabPanel>
       </Paper>
     </div>

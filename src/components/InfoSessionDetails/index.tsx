@@ -3,6 +3,7 @@ import _ from "lodash";
 import { compose } from "recompose";
 import { withFirebase } from "components/Firebase";
 import { Button } from "@material-ui/core";
+import ConfirmDialog from "components/__dialogs/ConfirmDialog";
 
 enum SIGN_STATUS {
   ACCEPTED = "Zaakceptowano",
@@ -19,6 +20,7 @@ interface IInfoSessionDetailsProps {
 const InfoSessionDetails: React.FC<IInfoSessionDetailsProps> = ({ firebase, sessionData, disableTabs }) => {
   const [buttonState, setButtonState] = useState(SIGN_STATUS.SIGNABLE);
   const [hostUsername, setHostUsername] = useState("");
+  const [openDialog, setOpenDialog] = useState(false);
 
   useEffect(() => {
     firebase
@@ -82,6 +84,35 @@ const InfoSessionDetails: React.FC<IInfoSessionDetailsProps> = ({ firebase, sess
       });
   }, [disableTabs, firebase, sessionData.uuid]);
 
+  const onLeaveSessionClickHandler = useCallback(() => {
+    const userID = firebase.auth.currentUser.uid;
+    const willingRef = firebase.session(sessionData.uuid).child("willing");
+    const acceptedRef = firebase.session(sessionData.uuid).child("accepted");
+    if (buttonState === SIGN_STATUS.PENDING) {
+      willingRef
+        .once("value", (snapshot: any) => {
+          const key = Object.keys(snapshot.val()).find((key) => snapshot.val()[key] === userID);
+          willingRef.child(key).remove();
+        })
+        .then(() => {
+          disableTabs(true);
+          setButtonState(SIGN_STATUS.SIGNABLE);
+          setOpenDialog(false);
+        });
+    } else if (buttonState === SIGN_STATUS.ACCEPTED) {
+      acceptedRef
+        .once("value", (snapshot: any) => {
+          const key = Object.keys(snapshot.val()).find((key) => snapshot.val()[key] === userID);
+          acceptedRef.child(key).remove();
+        })
+        .then(() => {
+          disableTabs(true);
+          setButtonState(SIGN_STATUS.SIGNABLE);
+          setOpenDialog(false);
+        });
+    }
+  }, [buttonState, firebase, sessionData.uuid]);
+
   const fetchHostName = useCallback(() => {
     firebase
       .user(sessionData.user)
@@ -103,12 +134,24 @@ const InfoSessionDetails: React.FC<IInfoSessionDetailsProps> = ({ firebase, sess
     }
   };
 
+  const openDialogHandler = () => {
+    setOpenDialog(true);
+  };
+
+  const closeDialogHandler = () => {
+    setOpenDialog(false);
+  };
+
   return (
     <div>
       <Button variant="contained" onClick={onJoinSessionClickHandler} disabled={buttonState !== SIGN_STATUS.SIGNABLE}>
         {buttonText()}
       </Button>
-      {buttonState !== SIGN_STATUS.SIGNABLE && <Button variant="contained">Opuść sesję</Button>}
+      {buttonState !== SIGN_STATUS.SIGNABLE && (
+        <Button variant="contained" onClick={openDialogHandler}>
+          Opuść sesję
+        </Button>
+      )}
       <div>
         <div>Sesja gracza: {fetchHostName()}</div>
         Aktualny status
@@ -124,6 +167,14 @@ const InfoSessionDetails: React.FC<IInfoSessionDetailsProps> = ({ firebase, sess
         Dodatkowe info
         <div>{sessionData.info}</div>
       </div>
+      {openDialog && (
+        <ConfirmDialog
+          text={"Czy na pewno chcesz opuścić sesję?"}
+          state={openDialog}
+          confirmHandler={onLeaveSessionClickHandler}
+          closeHandler={closeDialogHandler}
+        />
+      )}
     </div>
   );
 };

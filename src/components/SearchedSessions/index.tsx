@@ -47,8 +47,8 @@ const SearchedSessions: React.FC<any> = ({ firebase, sessions, filters, getSessi
           <CircularProgress />
         </div>
       )}
-      {_.map(preparedData, (sessionData: any) => (
-        <SessionCard data={sessionData} />
+      {_.map(preparedData, (sessionData: any, index: number) => (
+        <SessionCard data={sessionData} key={index} />
       ))}
       <DetailsDrawer />
     </div>

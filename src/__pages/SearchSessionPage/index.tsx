@@ -10,6 +10,11 @@ const SearchSessionPage: React.FC<any> = () => {
   const onClickHandler = () => {
     setOpenDrawer(true);
   };
+
+  const closeDrawerHandler = () => {
+    setOpenDrawer(false)
+  };
+
   return (
     <div>
       <div>
@@ -17,14 +22,13 @@ const SearchSessionPage: React.FC<any> = () => {
           Ustaw filtry
         </Button>
       </div>
-      <div onClick={() => setOpenDrawer(false)}>
+      <div>
         <div>
-          Wyniki
           <WrappedSearchedSessions />
         </div>
       </div>
       <Drawer className="navigation-drawer" variant="persistent" anchor="top" open={openDrawer}>
-        <Filters />
+        <Filters closeDrawer={closeDrawerHandler}/>
       </Drawer>
     </div>
   );
